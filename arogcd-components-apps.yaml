@@ -9,6 +9,11 @@ spec:
     repoURL: https://github.com/MiletoCarmelo/DEVOPS_ARGOCD.git
     targetRevision: HEAD
     path: argocd-components
+    helm:
+      valueFiles:
+      - values-tooling.yaml
+      - values-dev.yaml
+      - values-prod.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd

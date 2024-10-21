@@ -48,7 +48,6 @@ spec:
 {{ else }}
   sources: []
 {{ end }}
-
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
