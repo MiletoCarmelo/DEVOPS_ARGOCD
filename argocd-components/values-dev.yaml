@@ -1,0 +1,20 @@
+module: argocd
+
+projects:
+  - name: quant-cm
+
+subChartRepositories:
+  - name: generic-python-frontend
+    project: quant-cm
+    url: https://raw.githubusercontent.com/miletocarmelo/DEVOPS_HELM_generic_python_frontend/github-pages
+
+apps:
+  - name: trading-strategy-analysis
+    namespace: trading-strategy-analysis-test
+    project: quant-cm
+    source:
+      repoURL: https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_TradingStrategyAnaylsis
+      path: umbrella-trading-strategy-analysis
+      helm:
+        valueFiles: values.dev.yaml
+      targetRevision: main

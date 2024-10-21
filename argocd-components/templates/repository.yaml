@@ -1,0 +1,45 @@
+{{- range .Values.apps }}
+---
+apiVersion: v1
+data:
+  name: {{ .name | b64enc }}
+  project: {{ .project | b64enc }}
+  type: {{ printf "%s" "git" | b64enc }}
+{{- if .source }}
+  url: {{ .source.repoURL | b64enc }}
+{{- else }}
+  {{- with (index .sources 0) }}
+  url: {{ .repoURL | b64enc }}
+  {{- end }}
+{{- end }}
+kind: Secret
+metadata:
+  annotations:
+    managed-by: argocd.argoproj.io
+    sealedsecrets.bitnami.com/namespace-wide: "true"
+  labels:
+    argocd.argoproj.io/secret-type: repository
+  name: {{ .name }}
+  namespace: argocd
+type: Opaque
+{{- end }}
+
+{{- range .Values.subChartRepositories }}
+---
+apiVersion: v1
+data:
+  name: {{ .name | b64enc }}
+  project: {{ .project | b64enc }}
+  type: {{ printf "%s" "helm" | b64enc }}
+  url: {{ .url | b64enc }}
+kind: Secret
+metadata:
+  annotations:
+    managed-by: argocd.argoproj.io
+    sealedsecrets.bitnami.com/namespace-wide: "true"
+  labels:
+    argocd.argoproj.io/secret-type: repository
+  name: {{ .name }}
+  namespace: argocd
+type: Opaque
+{{- end }}

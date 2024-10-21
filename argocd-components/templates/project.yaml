@@ -1,0 +1,25 @@
+{{- range .Values.projects }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: {{ .name }}
+  namespace: argocd
+spec:
+  clusterResourceBlacklist:
+    - group: ""
+      kind: ""
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  destinations:
+    - name: '*'
+      namespace: '*'
+      server: '*'
+  namespaceResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  sourceRepos:
+    - '*'
+    - ""
+{{- end }}

@@ -1,0 +1,17 @@
+module: argocd
+
+projects:
+  - name: quant-cm
+
+repoCredentials:
+
+secrets:
+
+apps:
+  - name: kubernetes-dashboard
+    namespace: kubernetes-dashboard
+    project: quant-cm
+    source:
+      repoURL: https://kubernetes.github.io/dashboard/
+      chart: kubernetes-dashboard
+      targetRevision: 7.3.2
