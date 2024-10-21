@@ -28,3 +28,8 @@ argocd app create trading-strategy-analysis-prod \
   --sync-policy automated \
   --project quant-cm \
   --values values.prod.yaml
+
+
+# toujours à comprendre pk il faut les créer manuellement car normalement ils sont créés automatiquement
+# depuis le fichier argocd-components/values-prod.yaml et argocd-components/values-dev.yaml. 
+# l'hypothèse est que ne les aie mal normé (manquant le "-dev" et "-prod", ou bien alors justement avec qui faut enlever)
