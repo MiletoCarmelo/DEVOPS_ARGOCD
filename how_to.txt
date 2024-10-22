@@ -1,0 +1,334 @@
+
+######################## DOCKER AND MINIKUBE ####3###############################
+
+sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+
+
+
+minikube status 
+minikube stop 
+minikube start
+
+######################## KILL APP RUNNING ON PORTS #############################
+
+# list of tasks running : 
+sudo lsof -i :<PORT>
+
+# then kill pids : 
+sudo kill -9 <PID>
+
+######################## INSTALL ARGO CLI ######################################
+
+# Download the binary
+curl -sLO https://github.com/argoproj/argo-workflows/releases/download/v3.5.11/argo-linux-amd64.gz
+
+# Unzip
+gunzip argo-linux-amd64.gz
+
+# Make binary executable
+chmod +x argo-linux-amd64
+
+# Move binary to path
+mv ./argo-linux-amd64 /usr/local/bin/argo
+
+# Test installation
+argo version
+
+######################## ARGO EVENTS WORKFOW #############################
+
+export ARGO_WORKFLOWS_VERSION=v3.5.4
+kubectl create namespace argo
+# kubectl apply -n argo -f https://github.com/argoproj/argo-workflows/releases/download/$ARGO_WORKFLOWS_VERSION/install.yaml
+kubectl apply -n argo -f "https://github.com/argoproj/argo-workflows/releases/download/${ARGO_WORKFLOWS_VERSION}/quick-start-minimal.yaml"
+
+kubectl -n argo port-forward deployment/argo-server 8095:2746 &
+
+######################## ARGO CD INSTALLATION ##################################
+
+#installation : 
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+# define variable for password
+export PASS=$(kubectl --namespace argocd get secret argocd-initial-admin-secret --output jsonpath="{.data.password}" \
+        | base64 --decode)
+echo $PASS
+
+# define variable env for port used for argo_cd : 
+export BASE_HOST=localhost:8090
+echo $BASE_HOST
+
+# forward port 443 to 8090 : 
+kubectl --namespace argocd \
+        port-forward svc/argocd-server 8090:443 &
+
+# login into argocd:
+argocd login --insecure --username admin --password $PASS --grpc-web $BASE_HOST
+
+# update password to Admin123 (to keep the same on firefox):
+argocd account update-password --current-password $PASS --new-password Admin123
+
+######################## ARGO CD ADD APP ##################################
+ 
+# kubectl create namespace argocd
+
+kubectl apply -n argocd -f application.yaml
+
+######################## KUBE NAMESPACE ##################################
+
+# set current namespace (in this case default): 
+kubectl config set-context --current --namespace=default
+
+# get namespace list :
+kubectl get namespaces
+
+# delete namespace : 
+kubectl delete namespace monitorin production staging istio-system agro-events
+
+# if terminalting, we can force it : 
+kubectl get namespace argo-events -o json | jq '.spec.finalizers = []' | kubectl replace --raw "/api/v1/namespaces/argo-events/finalize" -f -
+
+# create namespace : 
+kubectl create namespace argo-events
+
+# delete a pod in a namespace :
+kubectl delete pod <pod-name> -n <namespace-name>
+
+
+######################## ARGO EVENTS INSTALLATION ########################
+
+# create namespace : 
+kubectl create namespace argo-events 
+
+# install the official manifest : 
+kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-events/stable/manifests/install.yaml
+
+# Install with a validating admission controller
+kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-events/stable/manifests/install-validating-webhook.yaml
+
+# install also events bus pod : 
+kubectl apply -n argo-events -f https://raw.githubusercontent.com/argoproj/argo-events/stable/examples/eventbus/native.yaml
+# => cest le meme fichier que mon event-bus.yaml dans (dev_event & prod_event)
+
+# setup event-sources for webhook: 
+# kubectl apply -n argo-events -f https://raw.githubusercontent.com/argoproj/argo-events/stable/examples/event-sources/webhook.yaml
+# => cest le meme fichier que mon event-source.yaml dans (dev_event & prod_event)
+
+
+
+######################## EXEMPLE : ARGO EVENTS WEBHOOK TRIGGER #####################
+
+# github example repo 
+git clone https://github.com/vfarcic/argo-events-demo.git
+
+# create event : 
+kubectl --namespace argo-events apply --filename event-source.yaml
+
+# an event source has been created (how to check):
+kubectl --namespace argo-events get eventsource
+# an service also has been created : 
+kubectl --namespace argo-events get service
+# and pods : 
+kubectl --namespace argo-events get pods 
+
+# the pod created is :
+export EVENTSOURCE_POD_NAME=<PAD NAME LIKE webhook-eventsource-cqqv4-7bcb9cd79c-r5j2vcqqv4-7bcb9cd79c-r5j2v >
+# portforward (NOT TO DO IN PRODUCTION), & to keep in background: 
+kubectl --namespace argo-events \
+        port-forward $EVENTSOURCE_POD_NAME 12000:12000 &
+
+# test to send a post request to the webhook : 
+curl -X POST http://localhost:12000/devops-toolkit
+
+    => should say : json: error calling MarshalJSON for type *json.RawMessage
+
+# test it as post : 
+curl -X POST -H "Content-Type: application/json" \
+    -d '{"message": "My first webhook"}' \
+    http://localhost:12000/devops-toolkit
+
+#   => should say : Handling connection for 12000 
+#                   success
+
+# MODIFICATION DU FICHIER event-source.yaml : 
+# 1) update du event : 
+kubectl apply -f event-source.yaml -n argo-events
+# 2) nom du pod automatiquement mis a jour : 
+kubectl --namespace argo-events get pods
+# 3) update du forwarding : 
+kubectl --namespace argo-events port-forward < NOM DU POD LIKE webhook-eventsource-tj5tn-796bd567d4-rdtfv> 12000:12000 &
+# 4) test ping : 
+curl -X POST http://localhost:12000/json
+# sa doit resortir : 
+#   => Handling connection for 12000
+#   => json: error calling MarshalJSON for type *json.RawMessage: unexpected end of JSON input
+
+
+
+
+######################## ARGO EVENTS SENSOR #############################
+
+# delete sensor : 
+kubectl delete sensor webhook -n argo-events
+
+# apply the sensor : 
+kubectl --namespace argo-events apply --filename sensor.yaml
+
+# or apply the changes : 
+kubectl apply -f sensor.yaml -n argo-events
+
+# test again : 
+curl -X POST -H "Content-Type: application/json" \
+    -d '{"message": "My first webhook"}' \
+    http://localhost:12000/json
+
+# check pods created : 
+kubectl --namespace argo-events get pods
+
+# check logs : 
+kubectl logs <SENSOR NAME LIKE webhook-sensor-7p9ss-7c8c475b5d-9xcrm> -n argo-events
+
+# check the output of the pod created ephemerial : 
+kubectl --namespace argo-events logs --selector app=json-ouput
+
+
+
+
+########3 SETTUPPING TRADING-STRATEGY-ANALYSIS TO ARGO EVENTS & SENSOR ###################
+
+
+# NB : follow before : ARGO EVENTS WORKFOW & ARGO EVENTS INSTALLATION installations
+
+# premier test dans le name space argo-events (si on change de namespace ne pas oublier de le changer dans chaque fichier!)
+
+kubectl create namespace argo-events
+
+kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-events/stable/manifests/install.yaml
+
+# Install with a validating admission controller
+kubectl apply -f https://raw.githubusercontent.com/argoproj/argo-events/stable/manifests/install-validating-webhook.yaml
+
+# setup events-bus pod : 
+kubectl apply -n argo-events -f https://raw.githubusercontent.com/argoproj/argo-events/stable/examples/eventbus/native.yaml
+
+# set up workflow module inside the namespace : 
+export ARGO_WORKFLOWS_VERSION=v3.5.4
+curl -sLO https://github.com/argoproj/argo-workflows/releases/download/${ARGO_WORKFLOWS_VERSION}/install.yaml
+# modify the namespace inside the file downloaded : 
+sed -i 's/namespace: argo/namespace: argo-events/g' install.yaml
+# using mac : 
+# sed -i '' 's/namespace: argo/namespace: argo-events/g' install.yaml
+# apply : 
+kubectl apply -f install.yaml
+# delete : 
+rm install.yaml
+# check argo server installed : 
+kubectl get pods -n argo-events
+# forward port : 
+kubectl -n argo-events port-forward deployment/argo-server 8075:2746 &
+
+
+# setup event-sources for webhook: 
+kubectl --namespace argo-events apply --filename ./prod_event/event-source.yaml
+
+# apply role binding to the default one : 
+kubectl --namespace argo-events apply --filename ./prod_event/role-binding.yaml
+# or apply the changes : 
+kubectl -n argo-events  apply --filename ./prod_event/role-binding.yaml
+
+
+# apply the sensor : 
+kubectl --namespace argo-events apply --filename ./prod_event/sensor.yaml
+# or apply the changes : 
+kubectl -n argo-events  apply --filename ./prod_event/sensor.yaml
+
+# setup the ingress : 
+kubectl --namespace argo-events apply --filename ./prod_event/ingress.yaml
+# or apply the changes : 
+kubectl -n argo-events  apply --filename ./prod_event/ingress.yaml
+
+# set up the redirection workflow : 
+kubectl --namespcae argo-events apply --filename ./prod_event/redirection-workflow.yaml
+# or apply the changes : 
+kubectl -n argo-events  apply --filename ./prod_event/redirection-workflow.yaml
+
+# an event source has been created (how to check):
+kubectl --namespace argo-events get eventsource
+# an service also has been created : 
+kubectl --namespace argo-events get service
+# and pods : 
+kubectl --namespace argo-events get pods 
+
+
+# portforward (NOT TO DO IN PRODUCTION USE THE LOADBALANCER METHOD), & to keep in background: 
+kubectl --namespace argo-events \
+        port-forward <EVENTSOURCE NAME POD LIKE trading-strategy-analysis-webhook-eventsource-q4pj2-86bbfbm2r58 8091:8080 &
+
+# faire plutot cela pour l'exposition du port en passant par le nom du service:
+#       => toutes les app sont en 8080 
+#       => toutefois lexposition changera 8091,8092,8093,...
+kubectl get services -n argo-events
+kubectl port-forward service/trading-strategy-analysis-webhook-eventsource-svc 8091:8080 -n argo-events
+
+
+# IN PROD It is better to forward and ttarger the eventsource service : 
+kubectl port-forward svc/trading-strategy-analysis-webhook-eventsource-svc -n argo-events 8888:8080
+
+
+# test if it is a get moethd : 
+curl http://localhost:8091/tradingstrategyanalysis
+
+# test if it is a post method : 
+# test to send a post request to the webhook : 
+curl -X POST http://localhost:8091/trading-strategy-analysis
+# test again : 
+curl -X POST -H "Content-Type: application/trading-strategy-analysis" \
+    -d '{"message": "My first webhook"}' \
+    http://localhost:8091/trading-strategy-analysis
+
+# check the output : 
+kubectl logs <SENSOR NAME LIKE trading-strategy-analysis-kjxjs> -n argo-events
+kubectl --namespace argo-events logs --selector app=trading-strategy-analysis
+
+
+# get all info : 
+kubectl get all -n quant-apps-events
+kubectl get deployments --namespace quant-apps-events
+
+
+
+
+
+
+
+
+
+
+############################################### TESTING DEV AND PROD CREATION : 
+
+
+
+
+
+
+
+
+
+# get release names : 
+helm list --all-namespaces
+
+# update helm 
+helm upgrade <release-name> <chart-path> -f values.yaml -n <name-space>
+helm upgrade generic-python-frontend . -f values.yaml -n default
+
+
+
+
+
+
+
+
+helm upgrade -i -f values.yaml generic-python-frontend .
+
+
+helm install generic-python-frontend ./generic-python-frontend
