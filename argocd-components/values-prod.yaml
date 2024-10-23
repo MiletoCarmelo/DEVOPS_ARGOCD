@@ -8,6 +8,10 @@ subChartRepositories:
     project: quant-cm
     url: https://raw.githubusercontent.com/miletocarmelo/DEVOPS_HELM_generic_python_frontend/github-pages
 
+  - name: generic-python-frontend-temp-pod
+    project: quant-cm
+    url: https://github.com/MiletoCarmelo/DEVOPS_HELM_generic_python_frontend_temporary_pods_creation/github-pages
+
 apps:
   - name: trading-strategy-analysis-prod
     namespace: prod
@@ -15,6 +19,16 @@ apps:
     source:
       repoURL: https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_TradingStrategyAnaylsis.git
       path: umbrella-trading-strategy-analysis
+      helm:
+        valueFiles: values.prod.yaml
+      targetRevision: main
+
+  - name: trading-strategy-analysis-temp-pod-prod
+    namespace: prod
+    project: quant-cm
+    source:
+      repoURL: https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_TradingStrategyAnaylsis.git
+      path: umbrella-trading-strategy-analysis-temp-pod
       helm:
         valueFiles: values.prod.yaml
       targetRevision: main

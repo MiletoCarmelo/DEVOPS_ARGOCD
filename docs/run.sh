@@ -33,3 +33,24 @@ argocd app create trading-strategy-analysis-prod \
 # toujours à comprendre pk il faut les créer manuellement car normalement ils sont créés automatiquement
 # depuis le fichier argocd-components/values-prod.yaml et argocd-components/values-dev.yaml. 
 # l'hypothèse est que ne les aie mal normé (manquant le "-dev" et "-prod", ou bien alors justement avec qui faut enlever)
+
+
+# Créer l'application
+argocd app create trading-strategy-analysis-temp-pod \
+  --repo https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_TradingStrategyAnaylsis.git \
+  --path umbrella-trading-strategy-analysis-temp-pod \
+  --dest-server https://kubernetes.default.svc \
+  --dest-namespace dev \
+  --sync-policy automated \
+  --project quant-cm \
+  --values values.dev.yaml
+
+# Créer l'application
+argocd app create trading-strategy-analysis-temp-pod \
+  --repo  https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_TradingStrategyAnaylsis.git \
+  --path umbrella-trading-strategy-analysis-temp-pod \
+  --dest-server https://kubernetes.default.svc \
+  --dest-namespace prod \
+  --sync-policy automated \
+  --project quant-cm \
+  --values values.prod.yaml
