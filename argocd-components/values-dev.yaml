@@ -13,7 +13,7 @@ subChartRepositories:
     url: https://github.com/MiletoCarmelo/DEVOPS_HELM_generic_python_frontend_temporary_pods_creation/github-pages
 
 apps:
-  - name: trading-strategy-analysis-dev
+  - name: tsa-dev
     namespace: dev
     project: quant-cm
     source:
@@ -23,7 +23,7 @@ apps:
         valueFiles: values.dev.yaml
       targetRevision: main
 
-  - name: trading-strategy-analysis-temp-pod-dev 
+  - name: tsa-pod-dev 
     namespace: dev
     project: quant-cm
     source:

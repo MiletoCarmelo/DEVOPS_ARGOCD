@@ -128,7 +128,7 @@ kubectl --namespace argo-events apply --filename event-source.yaml
 kubectl --namespace argo-events get eventsource
 # an service also has been created : 
 kubectl --namespace argo-events get service
-# and pods : 
+# and pod : 
 kubectl --namespace argo-events get pods 
 
 # the pod created is :
