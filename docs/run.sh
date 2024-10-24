@@ -11,7 +11,7 @@ helm template -f ./argocd-components/Chart.yaml argocd-components ./argocd-compo
 helm upgrade -i -f ./argocd-components/Chart.yaml argocd-components ./argocd-components/
 
 
-argocd app create trading-strategy-analysis-dev \
+argocd app create tsa \
   --repo https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_TradingStrategyAnaylsis.git \
   --path umbrella-trading-strategy-analysis \
   --dest-server https://kubernetes.default.svc \
@@ -20,7 +20,7 @@ argocd app create trading-strategy-analysis-dev \
   --project quant-cm \
   --values values.dev.yaml
 
-argocd app create trading-strategy-analysis-prod \
+argocd app create tsa \
   --repo https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_TradingStrategyAnaylsis.git \
   --path umbrella-trading-strategy-analysis \
   --dest-server https://kubernetes.default.svc \
@@ -36,7 +36,7 @@ argocd app create trading-strategy-analysis-prod \
 
 
 # Créer l'application
-argocd app create trading-strategy-analysis-temp-pod \
+argocd app create tsa-pod \
   --repo https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_TradingStrategyAnaylsis.git \
   --path umbrella-trading-strategy-analysis-temp-pod \
   --dest-server https://kubernetes.default.svc \
@@ -46,7 +46,7 @@ argocd app create trading-strategy-analysis-temp-pod \
   --values values.dev.yaml
 
 # Créer l'application
-argocd app create trading-strategy-analysis-temp-pod \
+argocd app create tsa-pod \
   --repo  https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_TradingStrategyAnaylsis.git \
   --path umbrella-trading-strategy-analysis-temp-pod \
   --dest-server https://kubernetes.default.svc \
