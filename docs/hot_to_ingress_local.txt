@@ -1,0 +1,11 @@
+# ------------------------ Installez d'abord NGINX Ingress Controller et cert-manager : --------------------------------- #
+
+# NGINX Ingress
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm install ingress-nginx ingress-nginx/ingress-nginx -n ingress-nginx --create-namespace
+
+# cert-manager
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.13.0/cert-manager.yaml
+
+
+# ------------------------ Déployez votre configuration : --------------------------------------------------------------- #
