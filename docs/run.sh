@@ -4,6 +4,15 @@ argocd app create argocd-components \
   --dest-server https://kubernetes.default.svc \
   --dest-namespace argocd \
   --sync-policy automated
+  
+# Si vous utilisez Helm pour ingress-nginx, réinstallez :
+# Réinstaller avec Helm
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm repo update
+
+helm install ingress-nginx ingress-nginx/ingress-nginx \
+  --namespace ingress-nginx \
+  --create-namespace
 
 # => application 'argocd-components' created
 
@@ -11,7 +20,7 @@ helm template -f ./argocd-components/Chart.yaml argocd-components ./argocd-compo
 helm upgrade -i -f ./argocd-components/Chart.yaml argocd-components ./argocd-components/
 
 
-argocd app create tsa \
+argocd app create tsa-dev \
   --repo https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_TradingStrategyAnaylsis.git \
   --path umbrella-trading-strategy-analysis \
   --dest-server https://kubernetes.default.svc \
@@ -36,7 +45,7 @@ argocd app create tsa \
 
 
 # Créer l'application
-argocd app create tsa-pod \
+argocd app create tsa-pod-dev \
   --repo https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_TradingStrategyAnaylsis.git \
   --path umbrella-trading-strategy-analysis-temp-pod \
   --dest-server https://kubernetes.default.svc \
@@ -54,3 +63,13 @@ argocd app create tsa-pod \
   --sync-policy automated \
   --project quant-cm \
   --values values.prod.yaml
+
+# Créer l'application
+argocd app create tsa-no-pod \
+  --repo  https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_TradingStrategyAnaylsis.git \
+  --path umbrella-trading-strategy-analysis-temp-pod \
+  --dest-server https://kubernetes.default.svc \
+  --dest-namespace prod \
+  --sync-policy automated \
+  --project quant-cm \
+  --values values.prod.nopods.yaml
