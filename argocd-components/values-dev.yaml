@@ -43,7 +43,7 @@ apps:
       # Si vous avez besoin de configuration Helm spécifique
       helm:
         values: |
-          domain: www.quant-cm.com
+          domain: dev.quant-cm.com
           service:
             port: 80
             targetPort: 8080  # Ajustez selon votre application
