@@ -13,7 +13,7 @@ subChartRepositories:
   #     url: https://github.com/MiletoCarmelo/DEVOPS_HELM_generic_python_frontend_temporary_pods_creation/github-pages
 
 apps:
-  - name: tsa-dev
+  - name: tsa-dev # ca va setup le releaseName variabe
     namespace: dev
     project: quant-cm
     source:
