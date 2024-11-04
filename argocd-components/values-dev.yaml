@@ -8,9 +8,9 @@ subChartRepositories:
     project: quant-cm
     url: https://raw.githubusercontent.com/miletocarmelo/DEVOPS_HELM_generic_python_frontend/github-pages
   
-  - name: generic-python-frontend-temp-pod
-    project: quant-cm
-    url: https://github.com/MiletoCarmelo/DEVOPS_HELM_generic_python_frontend_temporary_pods_creation/github-pages
+  #   - name: generic-python-frontend-temp-pod
+  #     project: quant-cm
+  #     url: https://github.com/MiletoCarmelo/DEVOPS_HELM_generic_python_frontend_temporary_pods_creation/github-pages
 
 apps:
   - name: tsa-dev
