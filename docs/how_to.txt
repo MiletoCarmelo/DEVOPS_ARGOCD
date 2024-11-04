@@ -332,3 +332,16 @@ helm upgrade -i -f values.yaml generic-python-frontend .
 
 
 helm install generic-python-frontend ./generic-python-frontend
+
+
+
+
+
+
+
+
+
+
+kubectl apply -f argocd-components-app.yaml
+kubectl patch application argocd-apps -n argocd --type merge -p '{"spec":{"syncPolicy":null}}'                                             
+kubectl patch application argocd-apps -n argocd --type merge -p '{"spec":{"syncPolicy":{"automated":{"prune":true,"selfHeal":true}}}}'
