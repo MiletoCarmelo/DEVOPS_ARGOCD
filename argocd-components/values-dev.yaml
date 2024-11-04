@@ -21,7 +21,7 @@ apps:
       path: umbrella-trading-strategy-analysis
       helm:
         valueFiles: values.dev.yaml
-      targetRevision: dev
+      targetRevision: prod
 
   # - name: tsa-pod-dev 
   #   namespace: dev
