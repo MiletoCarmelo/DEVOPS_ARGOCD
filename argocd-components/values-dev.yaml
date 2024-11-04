@@ -42,14 +42,4 @@ apps:
       targetRevision: prod
       # Si vous avez besoin de configuration Helm spécifique
       helm:
-        values: |
-          domain: dev.quant-cm.com
-          service:
-            port: 80
-            targetPort: 8070  # Ajustez selon votre application
-          ingress:
-            className: nginx
-            annotations:
-              cert-manager.io/cluster-issuer: selfsigned-issuer
-          tls:
-            secretName: quant-cm-tls
+        values:
