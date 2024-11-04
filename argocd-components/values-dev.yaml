@@ -23,15 +23,15 @@ apps:
         valueFiles: values.dev.yaml
       targetRevision: prod
 
-  - name: tsa-pod-dev 
-    namespace: dev
-    project: quant-cm
-    source:
-      repoURL: https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_TradingStrategyAnaylsis.git
-      path: umbrella-trading-strategy-analysis-temp-pod
-      helm:
-        valueFiles: values.dev.yaml
-      targetRevision: prod
+  # - name: tsa-pod-dev 
+  #   namespace: dev
+  #   project: quant-cm
+  #   source:
+  #     repoURL: https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_TradingStrategyAnaylsis.git
+  #     path: umbrella-trading-strategy-analysis-temp-pod
+  #     helm:
+  #       valueFiles: values.dev.yaml
+  #     targetRevision: prod
 
   - name: ingress-setup
     namespace: default
