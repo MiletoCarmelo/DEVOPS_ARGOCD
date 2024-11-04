@@ -11,8 +11,8 @@ spec:
     path: argocd-components
     helm:
       valueFiles:
-      #- values-dev.yaml    # Mettons dev en premier
-      - values-prod.yaml   # Puis prod
+      - values-dev.yaml    # Mettons dev en premier
+      # - values-prod.yaml   # Puis prod
       # - values-tooling.yaml
   destination:
     server: https://kubernetes.default.svc
