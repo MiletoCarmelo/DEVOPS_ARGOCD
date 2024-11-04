@@ -10,44 +10,43 @@ spec:
     name: ''
     namespace: {{ .namespace }}
     server: "https://kubernetes.default.svc"
-{{- if  .source  }}
+  {{- if .source }}
   source:
     path: {{ .source.path }}
     repoURL: {{ .source.repoURL }}
     targetRevision: {{ .source.targetRevision }}
-{{- if  .source.helm  }}
+    {{- if .source.helm }}
     helm:
-{{- if  .source.helm.valueFiles  }}
+      {{- if .source.helm.valueFiles }}
       valueFiles:
         - {{ .source.helm.valueFiles }}
-{{- end }}
-{{- if  .source.helm.values  }}
+      {{- end }}
+      {{- if .source.helm.values }}
       values: {{ toYaml .source.helm.values | nindent 8 }}
-{{- end }}
-{{- if  .source.helm.valuesObject  }}
+      {{- end }}
+      {{- if .source.helm.valuesObject }}
       valuesObject: {{ toYaml .source.helm.valuesObject | nindent 8 }}
-{{- end }}
-{{- if  .source.helm.parameters  }}
+      {{- end }}
+      {{- if .source.helm.parameters }}
       parameters:
-      {{ toYaml .source.helm.parameters | nindent 8 }}
-{{- end }}
-{{- end }}
-{{- if  .source.chart }}
+        {{ toYaml .source.helm.parameters | nindent 8 }}
+      {{- end }}
+    {{- end }}
+    {{- if .source.chart }}
     chart: {{ .source.chart }}
-{{- end }}
-{{- if  .source.directory  }}
+    {{- end }}
+    {{- if .source.directory }}
     directory:
       recurse: {{ .source.directory.recurse }}
-      jsonnet: { }
-{{ end }}
-{{ end }}
-
-{{- if  .sources  }}
+      jsonnet: {}
+    {{- end }}
+  {{- end }}
+  {{- if .sources }}
   sources:
     {{ toYaml .sources | nindent 2 }}
-{{ else }}
+  {{- else }}
   sources: []
-{{ end }}
+  {{- end }}
   syncPolicy:
     syncOptions:
       - CreateNamespace=true

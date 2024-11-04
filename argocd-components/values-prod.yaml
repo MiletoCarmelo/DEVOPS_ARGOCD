@@ -21,7 +21,7 @@ apps:
       path: umbrella-trading-strategy-analysis
       helm:
         valueFiles: values.prod.yaml
-      targetRevision: main
+      targetRevision: prod
 
   - name: tsa-pod-prod
     namespace: prod
@@ -31,4 +31,4 @@ apps:
       path: umbrella-trading-strategy-analysis-temp-pod
       helm:
         valueFiles: values.prod.yaml
-      targetRevision: main
+      targetRevision: prod

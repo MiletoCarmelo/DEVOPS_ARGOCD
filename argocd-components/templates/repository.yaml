@@ -5,13 +5,13 @@ data:
   name: {{ .name | b64enc }}
   project: {{ .project | b64enc }}
   type: {{ printf "%s" "git" | b64enc }}
-{{- if .source }}
+  {{- if .source }}
   url: {{ .source.repoURL | b64enc }}
-{{- else }}
+  {{- else }}
   {{- with (index .sources 0) }}
   url: {{ .repoURL | b64enc }}
   {{- end }}
-{{- end }}
+  {{- end }}
 kind: Secret
 metadata:
   annotations:
@@ -23,7 +23,6 @@ metadata:
   namespace: argocd
 type: Opaque
 {{- end }}
-
 {{- range .Values.subChartRepositories }}
 ---
 apiVersion: v1
