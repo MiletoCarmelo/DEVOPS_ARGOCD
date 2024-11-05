@@ -31,9 +31,10 @@ apps:
       repoURL: https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_TradingStrategyAnaylsis.git
       path: umbrella-trading-strategy-analysis-temp-pod
       helm:
-        valueFiles: values.prod.yaml
+        valueFiles:    # Attention à la syntaxe ici
+          - "values-prod.yaml"    # Les guillemets sont importants
       targetRevision: prod
-      
+
   # Ajout de cert-manager
   - name: cert-manager-setup
     namespace: cert-manager

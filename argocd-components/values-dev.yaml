@@ -51,8 +51,8 @@ apps:
       path: "ingress-setup"
       targetRevision: prod
       helm:
-        valueFiles:
-          - values-dev.yaml
+        valueFiles:    # Attention à la syntaxe ici
+          - "values-dev.yaml"    # Les guillemets sont importants
         values: |
           ingress:
             annotations:
