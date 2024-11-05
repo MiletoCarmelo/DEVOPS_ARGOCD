@@ -43,7 +43,7 @@ apps:
       path: "infrastructure/cert-manager"
       targetRevision: prod
 
-  - name: ingress-setup
+  - name: ingress-setup-dev
     namespace: dev           # namespace spécifique pour dev
     project: quant-cm
     source:
