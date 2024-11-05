@@ -33,6 +33,15 @@ apps:
       helm:
         valueFiles: values.prod.yaml
       targetRevision: prod
+      
+  # Ajout de cert-manager
+  - name: cert-manager-setup
+    namespace: cert-manager
+    project: infrastructure
+    source:
+      repoURL: "https://github.com/MiletoCarmelo/DEVOPS_HELM_localhost_ingress.git"
+      path: "infrastructure/cert-manager"
+      targetRevision: HEAD
 
   # Configuration de l'ingress
   - name: ingress-setup
@@ -50,13 +59,3 @@ apps:
           ingress:
             annotations:
               cert-manager.io/cluster-issuer: "letsencrypt-prod"
-
-
-  # Ajout de cert-manager
-  - name: cert-manager-setup
-    namespace: cert-manager
-    project: infrastructure
-    source:
-      repoURL: "https://github.com/MiletoCarmelo/DEVOPS_HELM_localhost_ingress.git"
-      path: "infrastructure/cert-manager"
-      targetRevision: HEAD
