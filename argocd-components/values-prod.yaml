@@ -32,3 +32,30 @@ apps:
       helm:
         valueFiles: values.prod.yaml
       targetRevision: prod
+
+  # Configuration de l'ingress
+  - name: ingress-setup
+    namespace: default
+    project: quant-cm
+    source:
+      repoURL: "https://github.com/votre-org/DEVOPS_HELM_localhost_ingress.git"
+      path: "ingress-setup"  # Chemin vers votre chart Helm
+      targetRevision: HEAD
+      helm:
+        valueFiles:
+          - values-dev.yaml
+        # Vous pouvez aussi spécifier des valeurs directement ici si nécessaire
+        values: |
+          ingress:
+            annotations:
+              cert-manager.io/cluster-issuer: "letsencrypt-prod"
+
+
+  # Ajout de cert-manager
+  - name: cert-manager-setup
+    namespace: cert-manager
+    project: infrastructure
+    source:
+      repoURL: "https://github.com/MiletoCarmelo/DEVOPS_HELM_localhost_ingress.git"
+      path: "infrastructure/cert-manager"
+      targetRevision: HEAD
