@@ -39,21 +39,16 @@ apps:
     namespace: cert-manager
     project: infrastructure
     source:
-      repoURL: "https://github.com/MiletoCarmelo/DEVOPS_HELM_localhost_ingress.git"
-      path: "infrastructure/cert-manager"
+      repoURL: https://github.com/MiletoCarmelo/DEVOPS_HELM_localhost_ingress.git
+      path: infrastructure/cert-manager
       targetRevision: prod
 
   - name: ingress-setup-dev     # Changé pour correspondre au nom attendu
     namespace: dev
     project: quant-cm
     source:
-      repoURL: "https://github.com/votre-org/DEVOPS_HELM_localhost_ingress.git"
-      path: "ingress-setup"
-      targetRevision: prod
+      repoURL: https://github.com/votre-org/DEVOPS_HELM_localhost_ingress.git
+      path: ingress-setup
       helm:
-        valueFiles:    # Attention à la syntaxe ici
-          - "values-dev.yaml"    # Les guillemets sont importants
-        values: |
-          ingress:
-            annotations:
-              cert-manager.io/cluster-issuer: "selfsigned-issuer"
+        valueFiles: values.dev.yaml
+      targetRevision: prod

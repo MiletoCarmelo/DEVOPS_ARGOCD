@@ -53,10 +53,4 @@ apps:
       path: "ingress-setup"  # Chemin vers votre chart Helm
       targetRevision: HEAD
       helm:
-        valueFiles:
-          - values-dev.yaml
-        # Vous pouvez aussi spécifier des valeurs directement ici si nécessaire
-        values: |
-          ingress:
-            annotations:
-              cert-manager.io/cluster-issuer: "letsencrypt-prod"
+        valueFiles: values.prod.yaml
