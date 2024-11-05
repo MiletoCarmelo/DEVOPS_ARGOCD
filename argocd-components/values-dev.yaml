@@ -42,19 +42,17 @@ apps:
       repoURL: "https://github.com/MiletoCarmelo/DEVOPS_HELM_localhost_ingress.git"
       path: "infrastructure/cert-manager"
       targetRevision: prod
-      
-  # Configuration de l'ingress
+
   - name: ingress-setup
-    namespace: dev
+    namespace: dev           # namespace spécifique pour dev
     project: quant-cm
     source:
       repoURL: "https://github.com/votre-org/DEVOPS_HELM_localhost_ingress.git"
-      path: "ingress-setup"  # Chemin vers votre chart Helm
-      targetRevision: prod
+      path: "ingress-setup"  # chemin vers votre chart
+      targetRevision: prod   # votre branche/tag spécifique
       helm:
         valueFiles:
           - values-dev.yaml
-        # Vous pouvez aussi spécifier des valeurs directement ici si nécessaire
         values: |
           ingress:
             annotations:
