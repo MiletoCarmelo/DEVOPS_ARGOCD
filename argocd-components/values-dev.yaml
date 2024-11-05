@@ -1,8 +1,8 @@
 module: argocd
 
 projects:
-  - name: quant-cm
   - name: infrastructure  # Ajout du projet infrastructure
+  - name: quant-cm
 
 subChartRepositories:
   - name: generic-python-frontend
