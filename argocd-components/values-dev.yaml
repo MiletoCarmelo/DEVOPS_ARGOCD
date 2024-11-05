@@ -35,7 +35,7 @@ apps:
   #     targetRevision: prod
 
   # Ajout de cert-manager
-  - name: cert-manager-setup
+  - name: cert-manager-setup-dev
     namespace: cert-manager
     project: infrastructure
     source:
