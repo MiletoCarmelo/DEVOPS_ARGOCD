@@ -36,7 +36,7 @@ apps:
 
   # Configuration de l'ingress
   - name: ingress-setup
-    namespace: default
+    namespace: dev
     project: quant-cm
     source:
       repoURL: "https://github.com/votre-org/DEVOPS_HELM_localhost_ingress.git"
