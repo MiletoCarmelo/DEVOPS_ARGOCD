@@ -40,7 +40,7 @@ apps:
     source:
       repoURL: "https://github.com/votre-org/DEVOPS_HELM_localhost_ingress.git"
       path: "ingress-setup"  # Chemin vers votre chart Helm
-      targetRevision: HEAD
+      targetRevision: prod
       helm:
         valueFiles:
           - values-dev.yaml
@@ -57,4 +57,4 @@ apps:
     source:
       repoURL: "https://github.com/MiletoCarmelo/DEVOPS_HELM_localhost_ingress.git"
       path: "infrastructure/cert-manager"
-      targetRevision: HEAD
+      targetRevision: prod
