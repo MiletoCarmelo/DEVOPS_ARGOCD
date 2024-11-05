@@ -31,8 +31,7 @@ apps:
       repoURL: https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_TradingStrategyAnaylsis.git
       path: umbrella-trading-strategy-analysis-temp-pod
       helm:
-        valueFiles:    # Attention à la syntaxe ici
-          - "values-prod.yaml"    # Les guillemets sont importants
+        valueFiles: values-prod.yaml 
       targetRevision: prod
 
   # Ajout de cert-manager
@@ -40,8 +39,8 @@ apps:
     namespace: cert-manager
     project: infrastructure
     source:
-      repoURL: "https://github.com/MiletoCarmelo/DEVOPS_HELM_localhost_ingress.git"
-      path: "infrastructure/cert-manager"
+      repoURL: https://github.com/MiletoCarmelo/DEVOPS_HELM_localhost_ingress.git
+      path: infrastructure/cert-manager
       targetRevision: HEAD
 
   # Configuration de l'ingress
@@ -49,8 +48,8 @@ apps:
     namespace: default
     project: quant-cm
     source:
-      repoURL: "https://github.com/votre-org/DEVOPS_HELM_localhost_ingress.git"
-      path: "ingress-setup"  # Chemin vers votre chart Helm
+      repoURL: https://github.com/MiletoCarmelo/DEVOPS_HELM_localhost_ingress.git
+      path: ingress-setup
       targetRevision: HEAD
       helm:
         valueFiles: values.prod.yaml
