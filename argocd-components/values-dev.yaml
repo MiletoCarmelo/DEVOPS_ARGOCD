@@ -20,16 +20,19 @@ subChartRepositories:
 
 apps:
 
- - name: cert-manager
+  - name: cert-manager
     namespace: cert-manager
-    project: default  # ou le projet souhaité
+    project: default
     source:
       chart: cert-manager
       repoURL: https://charts.jetstack.io
       targetRevision: v1.16.1
       helm:
-        values: |
+        values: |-
           installCRDs: true
+          global:
+            leaderElection:
+              namespace: cert-manager
 
   - name: tsa-dev # ca va setup le releaseName variabe
     namespace: dev

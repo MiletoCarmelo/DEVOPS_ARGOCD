@@ -23,8 +23,11 @@ apps:
       repoURL: https://charts.jetstack.io
       targetRevision: v1.16.1
       helm:
-        values: |
+        values: |-
           installCRDs: true
+          global:
+            leaderElection:
+              namespace: cert-manager
 
   - name: tsa-prod
     namespace: prod
