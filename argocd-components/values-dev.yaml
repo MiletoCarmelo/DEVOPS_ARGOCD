@@ -43,3 +43,13 @@ apps:
       helm:
         valueFiles: values.dev.yaml
       targetRevision: prod
+
+  - name: ingress-setup-dev     # Changé pour correspondre au nom attendu
+    namespace: dev
+    project: quant-cm
+    source:
+      repoURL: https://github.com/MiletoCarmelo/success-app.git"
+      path: "k8s"
+      helm:
+        valueFiles: values.dev.yaml
+      targetRevision: prod
