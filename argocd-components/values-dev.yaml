@@ -4,6 +4,11 @@ projects:
   - name: infrastructure  # Ajout du projet infrastructure
   - name: quant-cm
 
+cert-manager:
+  enabled: true
+  version: v1.16.1
+  url: https://charts.jetstack.io
+
 subChartRepositories:
   - name: generic-python-frontend
     project: quant-cm
@@ -14,6 +19,18 @@ subChartRepositories:
   #     url: https://github.com/MiletoCarmelo/DEVOPS_HELM_generic_python_frontend_temporary_pods_creation/github-pages
 
 apps:
+
+ - name: cert-manager
+    namespace: cert-manager
+    project: default  # ou le projet souhaité
+    source:
+      chart: cert-manager
+      repoURL: https://charts.jetstack.io
+      targetRevision: v1.16.1
+      helm:
+        values: |
+          installCRDs: true
+
   - name: tsa-dev # ca va setup le releaseName variabe
     namespace: dev
     project: quant-cm

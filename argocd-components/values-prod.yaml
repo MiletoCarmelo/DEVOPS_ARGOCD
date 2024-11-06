@@ -14,6 +14,18 @@ subChartRepositories:
     url: https://github.com/MiletoCarmelo/DEVOPS_HELM_generic_python_frontend_temporary_pods_creation/github-pages
 
 apps:
+
+  - name: cert-manager
+    namespace: cert-manager
+    project: default
+    source:
+      chart: cert-manager
+      repoURL: https://charts.jetstack.io
+      targetRevision: v1.16.1
+      helm:
+        values: |
+          installCRDs: true
+
   - name: tsa-prod
     namespace: prod
     project: quant-cm
