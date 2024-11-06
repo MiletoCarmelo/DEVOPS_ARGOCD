@@ -34,15 +34,6 @@ apps:
   #       valueFiles: values.dev.yaml
   #     targetRevision: prod
 
-  # Ajout de cert-manager
-  - name: cert-manager-setup-dev
-    namespace: cert-manager
-    project: infrastructure
-    source:
-      repoURL: https://github.com/MiletoCarmelo/DEVOPS_HELM_localhost_ingress.git
-      path: infrastructure/cert-manager
-      targetRevision: prod
-
   - name: ingress-setup-dev     # Changé pour correspondre au nom attendu
     namespace: dev
     project: quant-cm
