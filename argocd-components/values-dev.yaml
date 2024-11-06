@@ -48,7 +48,7 @@ apps:
     namespace: dev
     project: quant-cm
     source:
-      repoURL: https://github.com/MiletoCarmelo/success-app.git"
+      repoURL: https://github.com/MiletoCarmelo/success-app.git
       path: "k8s"
       helm:
         valueFiles: values.dev.yaml
