@@ -44,7 +44,7 @@ apps:
         valueFiles: values.dev.yaml
       targetRevision: prod
 
-  - name: ingress-setup-dev     # Changé pour correspondre au nom attendu
+  - name: success-app-dev
     namespace: dev
     project: quant-cm
     source:
