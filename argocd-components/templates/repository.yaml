@@ -21,13 +21,6 @@ metadata:
     argocd.argoproj.io/secret-type: repository
   name: {{ .name }}
   namespace: argocd
-{{ if .Values.githubCredentials }}
-stringData:
-  type: git
-  url: {{ .source.urlBase }}
-  username: {{ .Values.githubCredentials.username }}
-  password: {{ .Values.githubCredentials.pat }}
-{{- end }}
 type: Opaque
 {{- end }}
 {{- range .Values.subChartRepositories }}
