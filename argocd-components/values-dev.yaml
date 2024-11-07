@@ -44,7 +44,7 @@ apps:
             leaderElection:
               namespace: cert-manager
 
- - name: sealed-secrets
+  - name: sealed-secrets
     namespace: sealed-secrets
     project: infrastructure
     source:
