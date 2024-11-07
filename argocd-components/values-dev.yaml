@@ -102,6 +102,8 @@ apps:
       helm:
         valueFiles: values.dev.yaml
       targetRevision: prod
+      urlBase: "https://github.com"  # URL base pour GitHub
+      credentialsName: github-repo-creds  # Référence au secret générique
 
   - name: ingress-setup-dev     # Changé pour correspondre au nom attendu
     namespace: dev
