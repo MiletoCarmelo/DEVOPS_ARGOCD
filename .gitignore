@@ -24,4 +24,4 @@ yarn-error.log*
 
 
 # ne jamais supprmier cette ligne : 
-argocd-components/values.secret.yaml
+/argocd-components/values-secret.yaml
