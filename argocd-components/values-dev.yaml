@@ -62,6 +62,17 @@ apps:
               prometheus.io/scrape: "true"
               prometheus.io/port: "10254"
 
+
+  - name: success-app-dev
+    namespace: dev
+    project: quant-cm
+    source:
+      repoURL: https://github.com/MiletoCarmelo/success-app.git
+      path: "k8s"
+      helm:
+        valueFiles: values.dev.yaml
+      targetRevision: prod
+      
   - name: tsa-dev # ca va setup le releaseName variabe
     namespace: dev
     project: quant-cm
@@ -88,16 +99,6 @@ apps:
     source:
       repoURL: https://github.com/MiletoCarmelo/DEVOPS_HELM_localhost_ingress.git
       path: ingress-setup
-      helm:
-        valueFiles: values.dev.yaml
-      targetRevision: prod
-
-  - name: success-app-dev
-    namespace: dev
-    project: quant-cm
-    source:
-      repoURL: https://github.com/MiletoCarmelo/success-app.git
-      path: "k8s"
       helm:
         valueFiles: values.dev.yaml
       targetRevision: prod
