@@ -9,6 +9,11 @@ cert-manager:
   version: v1.16.1
   url: https://charts.jetstack.io
 
+ingress-nginx:
+  enabled: true
+  version: "4.11.3"  # Version actuelle stable
+  url: https://kubernetes.github.io/ingress-nginx
+
 subChartRepositories:
   - name: generic-python-frontend
     project: quant-cm
@@ -22,7 +27,7 @@ apps:
 
   - name: cert-manager
     namespace: cert-manager
-    project: default
+    project: infrastructure
     source:
       chart: cert-manager
       repoURL: https://charts.jetstack.io
@@ -33,6 +38,29 @@ apps:
           global:
             leaderElection:
               namespace: cert-manager
+  
+  - name: ingress-nginx
+    namespace: ingress-nginx
+    project: infrastructure
+    source:
+      chart: ingress-nginx
+      repoURL: https://kubernetes.github.io/ingress-nginx
+      targetRevision: 4.11.3
+      helm:
+        values: |-
+          controller:
+            publishService:
+              enabled: true
+            service:
+              type: NodePort
+              nodePorts:
+                http: 30753
+                https: 31098
+            metrics:
+              enabled: true
+            podAnnotations:
+              prometheus.io/scrape: "true"
+              prometheus.io/port: "10254"
 
   - name: tsa-dev # ca va setup le releaseName variabe
     namespace: dev
