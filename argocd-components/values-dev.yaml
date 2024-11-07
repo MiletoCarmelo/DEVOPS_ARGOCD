@@ -93,6 +93,16 @@ apps:
   #       valueFiles: values.dev.yaml
   #     targetRevision: prod
 
+  - name: optionsviz-dev # ca va setup le releaseName variabe
+    namespace: dev
+    project: quant-cm
+    source:
+      repoURL: https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_OptionsViz.git
+      path: umbrella-optionsviz
+      helm:
+        valueFiles: values.dev.yaml
+      targetRevision: prod
+
   - name: ingress-setup-dev     # Changé pour correspondre au nom attendu
     namespace: dev
     project: quant-cm
