@@ -11,7 +11,7 @@ cert-manager:
 
 sealed-secrets:
   enabled: true
-  version: 0.27.2
+  version: 2.16.2
   url: https://bitnami-labs.github.io/sealed-secrets
 
 ingress-nginx:
@@ -70,7 +70,7 @@ apps:
     source:
       chart: sealed-secrets
       repoURL: https://bitnami-labs.github.io/sealed-secrets
-      targetRevision: 0.27.2
+      targetRevision: 2.16.2
       helm:
         values: |-
           fullnameOverride: sealed-secrets

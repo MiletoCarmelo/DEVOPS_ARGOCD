@@ -12,7 +12,7 @@ get_cert_manager_version() {
 # Fonction pour obtenir la dernière version stable de sealed-secrets
 get_sealed_secrets_version() {
     # Récupère la version du chart Helm (2.16.2) au lieu de la version de l'app (0.27.2)
-    curl -s https://api.github.com/repos/bitnami-labs/sealed-secrets/releases/latest | grep "helm-v" | cut -d'"' -f4 | sed 's/helm-v//'
+    curl -s https://api.github.com/repos/bitnami-labs/sealed-secrets/releases | grep "tag_name" | grep "helm-v" | head -n 1 | cut -d'"' -f4 | sed 's/helm-v//'
 }
 
 # Fonction pour obtenir la dernière version stable de ingress-nginx
