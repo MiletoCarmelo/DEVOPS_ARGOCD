@@ -16,7 +16,8 @@ get_sealed_secrets_version() {
 
 # Fonction pour obtenir la dernière version stable de ingress-nginx
 get_ingress_nginx_version() {
-    curl -s https://api.github.com/repos/kubernetes/ingress-nginx/releases/latest | grep tag_name | cut -d'"' -f4
+    # Récupère la version sans le préfixe
+    curl -s https://api.github.com/repos/kubernetes/ingress-nginx/releases/latest | grep tag_name | cut -d'"' -f4 | sed 's/controller-//' | sed 's/helm-chart-//'
 }
 
 # Fonction pour mettre à jour le fichier values-dev.yaml
