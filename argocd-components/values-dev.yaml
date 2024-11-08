@@ -6,17 +6,17 @@ projects:
 
 cert-manager:
   enabled: true
-  version: v1.16.1
+  version: ${CERT_MANAGER_VERSION}
   url: https://charts.jetstack.io
 
 sealed-secrets:
   enabled: true
-  version: "2.16.2"  # Version actuelle stable
+  version: ${SEALED_SECRETS_VERSION}
   url: https://bitnami-labs.github.io/sealed-secrets
 
 ingress-nginx:
   enabled: true
-  version: "4.11.3"  # Version actuelle stable
+  version: ${INGRESS_NGINX_VERSION}
   url: https://kubernetes.github.io/ingress-nginx
 
 subChartRepositories:
@@ -46,7 +46,7 @@ apps:
     source:
       chart: cert-manager
       repoURL: https://charts.jetstack.io
-      targetRevision: v1.16.1
+      targetRevision: ${CERT_MANAGER_VERSION}
       helm:
         values: |-
           installCRDs: true
@@ -70,7 +70,7 @@ apps:
     source:
       chart: sealed-secrets
       repoURL: https://bitnami-labs.github.io/sealed-secrets
-      targetRevision: 2.16.2
+      targetRevision: ${SEALED_SECRETS_VERSION}
       helm:
         values: |-
           fullnameOverride: sealed-secrets
@@ -99,7 +99,7 @@ apps:
     source:
       chart: ingress-nginx
       repoURL: https://kubernetes.github.io/ingress-nginx
-      targetRevision: 4.11.3
+      targetRevision: ${INGRESS_NGINX_VERSION}
       helm:
         values: |-
           controller:
