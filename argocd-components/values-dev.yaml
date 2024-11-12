@@ -114,7 +114,7 @@ apps:
             - name: default
               protocol: layer2
               addresses:
-              - 192.168.68.5
+              - 192.168.68.5 # Ajustez cette plage selon votre réseau minikube
 
 
   - name: ingress-nginx
