@@ -83,7 +83,7 @@ apps:
             enabled: false
           secretName: "sealed-secrets-key"
   
-- name: ingress-nginx
+  - name: ingress-nginx
     namespace: ingress-nginx
     project: infrastructure
     syncPolicy:
