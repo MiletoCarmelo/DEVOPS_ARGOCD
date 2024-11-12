@@ -12,11 +12,12 @@ if [ "$purge" = "yes" ]; then
         echo "minikube is not started"
     else
         echo "minikube already started...it will be purged"
-        minikube delete > /dev/null 2>&1
+        sudo minikube delete > /dev/null 2>&1
         echo "minikube purged"
     fi
     minikube start --driver=hyperkit
     echo "minikube started"
+    minikube addons enable ingress
 
     # check if namespace argocd already exist if not install it :
     if kubectl get namespace argocd > /dev/null 2>&1; then
@@ -27,7 +28,7 @@ if [ "$purge" = "yes" ]; then
         echo "namespace argocd created"
     fi
     echo "argocd processing ...." 
-    sleep 120
+    sleep 30
 fi
 
 # define variable for password
