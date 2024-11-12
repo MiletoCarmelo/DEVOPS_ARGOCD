@@ -99,6 +99,26 @@ apps:
               use-proxy-protocol: "false"
               proxy-real-ip-cidr: "192.168.68.0/24"  # Ajusté pour votre réseau Minikube
 
+  - name: ingress-setup-dev
+    namespace: dev
+    project: quant-cm
+    source:
+      repoURL: https://github.com/MiletoCarmelo/DEVOPS_HELM_localhost_ingress.git
+      path: ingress-setup
+      helm:
+        valueFiles: values.dev.yaml
+      targetRevision: prod
+      
+  - name: ingress-setup-dev
+    namespace: dev
+    project: quant-cm
+    source:
+      repoURL: https://github.com/MiletoCarmelo/DEVOPS_HELM_localhost_ingress.git
+      path: ingress-setup
+      helm:
+        valueFiles: values.dev.yaml
+      targetRevision: prod
+      
   - name: success-app-dev
     namespace: dev
     project: quant-cm
@@ -125,16 +145,6 @@ apps:
     source:
       repoURL: https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_OptionsViz.git
       path: umbrella-optionsviz
-      helm:
-        valueFiles: values.dev.yaml
-      targetRevision: prod
-
-  - name: ingress-setup-dev
-    namespace: dev
-    project: quant-cm
-    source:
-      repoURL: https://github.com/MiletoCarmelo/DEVOPS_HELM_localhost_ingress.git
-      path: ingress-setup
       helm:
         valueFiles: values.dev.yaml
       targetRevision: prod
