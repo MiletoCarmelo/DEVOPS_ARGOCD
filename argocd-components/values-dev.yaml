@@ -63,14 +63,19 @@ apps:
   - name: metallb-config
     namespace: metallb-system
     project: infrastructure
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+      syncOptions:
+        - CreateNamespace=true
     source:
       repoURL: https://github.com/MiletoCarmelo/DEVOPS_HELM_localhost_ingress.git
       path: metallb-config
+      targetRevision: prod
       directory:
         recurse: true
-      plugin:
-        name: kustomize
-      targetRevision: prod
+        jsonnet: {}
 
   - name: ingress-nginx
     namespace: ingress-nginx
