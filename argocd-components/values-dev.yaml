@@ -86,14 +86,13 @@ apps:
               enabled: true
             service:
               type: LoadBalancer
-              ports:
-                http: 80
-                https: 443
+              externalTrafficPolicy: Local
             metrics:
               enabled: true
-            podAnnotations:
-              prometheus.io/scrape: "true"
-              prometheus.io/port: "10254"
+            config:
+              use-forwarded-headers: "true"
+              use-proxy-protocol: "false"
+              proxy-real-ip-cidr: "192.168.68.0/24"  # Ajusté pour votre réseau Minikube
 
   - name: success-app-dev
     namespace: dev
