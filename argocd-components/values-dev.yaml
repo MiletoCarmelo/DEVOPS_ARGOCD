@@ -19,6 +19,12 @@ ingress-nginx:
   version: 4.11.3
   url: https://kubernetes.github.io/ingress-nginx
 
+# D'abord ajouter le repository MetalLB dans la section cert-manager/sealed-secrets/etc.
+metallb:
+  enabled: true
+  version: 0.14.7
+  url: https://metallb.github.io/metallb
+
 subChartRepositories:
   - name: generic-python-frontend
     project: quant-cm
@@ -83,6 +89,34 @@ apps:
             enabled: false
           secretName: "sealed-secrets-key"
   
+  - name: metallb
+    namespace: metallb-system
+    project: infrastructure
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+      syncOptions:
+        - CreateNamespace=true
+        - PrunePropagationPolicy=foreground
+        - PruneLast=true
+        - ApplyOutOfSyncOnly=true
+        - Validate=false
+    source:
+      chart: metallb
+      repoURL: https://metallb.github.io/metallb
+      targetRevision: 0.14.7
+      helm:
+        values: |-
+          # Configuration MetalLB
+          configInline:
+            address-pools:
+            - name: default
+              protocol: layer2
+              addresses:
+              - 192.168.68.5
+
+
   - name: ingress-nginx
     namespace: ingress-nginx
     project: infrastructure
