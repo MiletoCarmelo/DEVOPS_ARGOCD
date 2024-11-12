@@ -60,6 +60,7 @@ apps:
             leaderElection:
               namespace: cert-manager
 
+
   - name: sealed-secrets
     namespace: sealed-secrets
     project: infrastructure
@@ -89,6 +90,7 @@ apps:
             enabled: false
           secretName: "sealed-secrets-key"
   
+
   - name: metallb
     namespace: metallb-system
     project: infrastructure
@@ -108,13 +110,32 @@ apps:
       targetRevision: 0.14.7
       helm:
         values: |-
-          # Configuration MetalLB
-          configInline:
-            address-pools:
-            - name: default
-              protocol: layer2
-              addresses:
-              - 192.168.68.5 # Ajustez cette plage selon votre réseau minikube
+          # Configuration de base de MetalLB
+          crds:
+            enabled: true
+          controller:
+            enabled: true
+          speaker:
+            enabled: true
+
+
+  - name: metallb-config
+    namespace: metallb-system
+    project: infrastructure
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+      syncOptions:
+        - CreateNamespace=true
+    source:
+      directory:
+        jsonnet: {}
+      plugin:
+        name: kustomize
+      repoURL: https://github.com/MiletoCarmelo/DEVOPS_HELM_localhost_ingress.git  # Remplacer par votre repo
+      path: metallb-config
+      targetRevision: prod
 
 
   - name: ingress-nginx
@@ -171,6 +192,7 @@ apps:
         valueFiles: values.dev.yaml
       targetRevision: prod
       
+
   - name: tsa-dev # ca va setup le releaseName variabe
     namespace: dev
     project: quant-cm
@@ -200,6 +222,7 @@ apps:
   #     helm:
   #       valueFiles: values.dev.yaml
   #     targetRevision: prod
+
 
   - name: optionsviz-dev # ca va setup le releaseName variabe
     namespace: dev
