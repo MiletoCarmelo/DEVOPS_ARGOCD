@@ -12,7 +12,7 @@ subChartRepositories:
 # Define applications
 apps:
 
-  - name: tailscale-operator
+  - name: tailscale
     namespace: tailscale
     project: infrastructure
     source:
@@ -36,6 +36,15 @@ apps:
             - service: ingress-setup-dev.dev  # Le service de votre ingress dans le namespace dev
               port: 80
               hostname: mm.ts.ch  # ou le nom que vous préférez
+
+  # Ajoutez la config Tailscale
+  - name: tailscale-config
+    namespace: tailscale
+    project: infrastructure
+    source:
+      repoURL: https://github.com/MiletoCarmelo/DEVOPS_HELM_localhost_ingress.git
+      path: tailscale-config
+      targetRevision: prod
 
   - name: cert-manager
     namespace: cert-manager
