@@ -25,10 +25,10 @@ apps:
           oauth:
             existingClientIDSecret:
               name: tailscale-operator
-              key: oauth.clientId
+              key: ts.oauth.clientId
             existingClientSecretSecret:
               name: tailscale-operator
-              key: oauth.clientSecret
+              key: ts.oauth.clientSecret
         
         proxy:
           enabled: true
