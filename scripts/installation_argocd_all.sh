@@ -1,23 +1,50 @@
 # attention : a run dans le dossier mere de DEVOPS_ARGOCD avec : 
 # ./scripts/installation_argocd_namespace.sh (sh ./scripts/installation_argocd_namespace.sh)
 
+# check if macbook or linux 
+OS_TYPE=$(uname)
+
 # get imputs : 
 # Avec une vérification du nombre d'arguments
-echo "purge minikube ? (yes or no)" 
+echo "purge minikube / k3s ? (yes or no)" 
 read purge
 
 # check if minikube is running if not start it :
 if [ "$purge" = "yes" ]; then
-    if ! minikube status > /dev/null 2>&1; then
-        echo "minikube is not started"
-    else
-        echo "minikube already started...it will be purged"
-        sudo minikube delete > /dev/null 2>&1
-        echo "minikube purged"
+
+# Encoder la configuration complète en base64
+    if [[ "$OS_TYPE" == "Darwin" ]]; then
+        if ! minikube status > /dev/null 2>&1; then
+            echo "minikube is not started"
+        else
+            echo "minikube already started...it will be purged"
+            sudo minikube delete > /dev/null 2>&1
+            echo "minikube purged"
+        fi
+        echo "🖥️ Vous êtes sur macOS."
+        minikube start --driver=hyperkit
+        echo "minikube started"
+        minikube addons enable ingress
+    elif [[ "$OS_TYPE" == "Linux" ]]; then
+        echo "🐧 Vous êtes sur Linux."
+        # Arrêter le service
+        sudo systemctl stop k3s
+        # Supprimer tous les workloads
+        kubectl delete all --all -A
+        # Puis désinstaller
+        k3s-uninstall.sh
+        # Puis le réinstaller 
+        curl -sfL https://get.k3s.io | sh -
+        # Configurer l'accès
+        mkdir -p ~/.kube
+        sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
+        sudo chown $USER:$USER ~/.kube/config
+        sudo chmod 600 ~/.kube/config
+
+        # Ajouter la variable d'environnement
+        export KUBECONFIG=~/.kube/config
+        echo "export KUBECONFIG=~/.kube/config" >> ~/.bashrc
     fi
-    minikube start --driver=hyperkit
-    echo "minikube started"
-    minikube addons enable ingress
 
     # check if namespace argocd already exist if not install it :
     if kubectl get namespace argocd > /dev/null 2>&1; then
@@ -30,6 +57,8 @@ if [ "$purge" = "yes" ]; then
     echo "argocd processing ...." 
     sleep 30
 fi
+
+kubectl wait --for=condition=Ready pods --all -n argocdyay -S argocd
 
 # define variable for password
 export PASS=$(kubectl --namespace argocd get secret argocd-initial-admin-secret --output jsonpath="{.data.password}" \

@@ -11,6 +11,32 @@ subChartRepositories:
 
 # Define applications
 apps:
+
+  - name: tailscale-operator
+    namespace: tailscale
+    project: infrastructure
+    source:
+      chart: tailscale-operator
+      repoURL: https://pkgs.tailscale.com/helmcharts
+      targetRevision: 1.56.1
+    helm:
+      values: |
+        operator:
+          oauth:
+            existingClientIDSecret:
+              name: tailscale-operator
+              key: oauth.clientId
+            existingClientSecretSecret:
+              name: tailscale-operator
+              key: oauth.clientSecret
+        
+        proxy:
+          enabled: true
+          routes:
+            - service: ingress-setup-dev.dev  # Le service de votre ingress dans le namespace dev
+              port: 80
+              hostname: mm.ts.ch  # ou le nom que vous préférez
+
   - name: cert-manager
     namespace: cert-manager
     project: infrastructure
@@ -99,16 +125,6 @@ apps:
               use-proxy-protocol: "false"
               proxy-real-ip-cidr: "192.168.68.0/24"  # Ajusté pour votre réseau Minikube
 
-  - name: ingress-setup-dev
-    namespace: dev
-    project: quant-cm
-    source:
-      repoURL: https://github.com/MiletoCarmelo/DEVOPS_HELM_localhost_ingress.git
-      path: ingress-setup
-      helm:
-        valueFiles: values.dev.yaml
-      targetRevision: prod
-      
   - name: ingress-setup-dev
     namespace: dev
     project: quant-cm
