@@ -39,9 +39,9 @@ apps:
     namespace: httpbin
     project: infrastructure
     source:
-      repoURL: https://github.com/matheusfm/httpbin
+      repoURL: https://github.com/MiletoCarmelo/DEVOPS_HELM_localhost_ingress.git
       path: httpbin
-      targetRevision: latest
+      targetRevision: prod
       directory:
         recurse: true
         jsonnet: {}
