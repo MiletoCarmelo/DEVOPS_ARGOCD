@@ -39,7 +39,7 @@ apps:
     namespace: httpbin
     project: infrastructure
     source:
-      repoURL: matheusfm/httpbin
+      repoURL: https://github.com/matheusfm/httpbin
       path: httpbin
       targetRevision: latest
       directory:
