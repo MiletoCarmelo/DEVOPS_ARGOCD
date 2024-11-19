@@ -10,7 +10,7 @@ subChartRepositories:
     url: https://raw.githubusercontent.com/miletocarmelo/DEVOPS_HELM_generic_python_frontend/github-pages
 
 # Define applications
-# apps:
+apps:
 #   - name: tailscale
 #     namespace: tailscale
 #     project: infrastructure
