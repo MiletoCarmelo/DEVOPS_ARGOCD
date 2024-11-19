@@ -38,12 +38,12 @@ apps:
   #             hostname: mm.ts.ch  # ou le nom que vous préférez
 
   # Ajoutez la config Tailscale
-  - name: tailscale-config
+  - name: tailscale-proxy
     namespace: tailscale
     project: infrastructure
     source:
       repoURL: https://github.com/MiletoCarmelo/DEVOPS_HELM_localhost_ingress.git
-      path: tailscale-config
+      path: tailscale-proxy
       targetRevision: prod
       directory:
         recurse: true
