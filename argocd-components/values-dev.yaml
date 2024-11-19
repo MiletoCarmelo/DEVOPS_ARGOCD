@@ -11,31 +11,29 @@ subChartRepositories:
 
 # Define applications
 apps:
-
-  # - name: tailscale
-  #   namespace: tailscale
-  #   project: infrastructure
-  #   source:
-  #     chart: tailscale-operator
-  #     repoURL: https://pkgs.tailscale.com/helmcharts
-  #     targetRevision: 1.76.6
-  #   helm:
-  #     values: |
-  #       operator:
-  #         oauth:
-  #           existingClientIDSecret:
-  #             name: tailscale-operator
-  #             key: ts.oauth.clientId
-  #           existingClientSecretSecret:
-  #             name: tailscale-operator
-  #             key: ts.oauth.clientSecret
-        
-  #       proxy:
-  #         enabled: true
-  #         routes:
-  #           - service: ingress-setup-dev.dev  # Le service de votre ingress dans le namespace dev
-  #             port: 80
-  #             hostname: mm.ts.ch  # ou le nom que vous préférez
+  - name: tailscale
+    namespace: tailscale
+    project: infrastructure
+    source:
+      chart: tailscale-operator
+      repoURL: https://pkgs.tailscale.com/helmcharts
+      targetRevision: 1.76.6
+    helm:
+      values: |
+        operator:
+          oauth:
+            existingClientIDSecret:
+              name: ts-secrets
+              key: TS_CLIENT_ID
+            existingClientSecretSecret:
+              name: ts-secrets
+              key: TS_CLIENT_SECRET
+#         proxy:
+#          enabled: true
+#          routes:
+#            - service: ingress-setup-dev.dev  # Le service de votre ingress dans le namespace dev
+#              port: 80
+#              hostname: mm.ts.ch  # ou le nom que vous préférez
 
   # Ajoutez la config Tailscale
   - name: tailscale-proxy
