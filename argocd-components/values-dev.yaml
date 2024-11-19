@@ -10,24 +10,24 @@ subChartRepositories:
     url: https://raw.githubusercontent.com/miletocarmelo/DEVOPS_HELM_generic_python_frontend/github-pages
 
 # Define applications
-apps:
-  - name: tailscale
-    namespace: tailscale
-    project: infrastructure
-    source:
-      chart: tailscale-operator
-      repoURL: https://pkgs.tailscale.com/helmcharts
-      targetRevision: 1.76.6
-    helm:
-      values: |
-        operator:
-          oauth:
-            existingClientIDSecret:
-              name: operator-oauth
-              key: client_id
-            existingClientSecretSecret:
-              name: operator-oauth
-              key: client_secret
+# apps:
+#   - name: tailscale
+#     namespace: tailscale
+#     project: infrastructure
+#     source:
+#       chart: tailscale-operator
+#       repoURL: https://pkgs.tailscale.com/helmcharts
+#       targetRevision: 1.76.6
+#     helm:
+#       values: |
+#         operator:
+#           oauth:
+#             existingClientIDSecret:
+#               name: operator-oauth
+#               key: client_id
+#             existingClientSecretSecret:
+#               name: operator-oauth
+#               key: client_secret
 #         proxy:
 #          enabled: true
 #          routes:
