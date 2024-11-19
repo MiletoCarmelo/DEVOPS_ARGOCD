@@ -23,11 +23,11 @@ apps:
         operator:
           oauth:
             existingClientIDSecret:
-              name: ts-secrets
-              key: TS_CLIENT_ID
+              name: operator-oauth
+              key: client_id
             existingClientSecretSecret:
-              name: ts-secrets
-              key: TS_CLIENT_SECRET
+              name: operator-oauth
+              key: client_secret
 #         proxy:
 #          enabled: true
 #          routes:
