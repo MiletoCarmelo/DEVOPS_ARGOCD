@@ -194,4 +194,4 @@ apps:
       path: "."  # Si vos fichiers Helm sont à la racine du repo
       helm:
         valueFiles: values.dev.yaml
-      targetRevision: prod
+      targetRevision: main
