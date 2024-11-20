@@ -185,3 +185,13 @@ apps:
       helm:
         valueFiles: values.dev.yaml
       targetRevision: prod
+
+  - name: postgres-dev
+    namespace: postgres
+    project: quant-cm
+    source:
+      repoURL: https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_postgres.git
+      path: "."  # Si vos fichiers Helm sont à la racine du repo
+      helm:
+        valueFiles: values.dev.yaml
+      targetRevision: prod
