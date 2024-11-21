@@ -205,3 +205,10 @@ apps:
       helm:       # Ajout de cette section
         valueFiles: values.yaml    # ou values.dev.yaml si vous avez des fichiers par environnement
       targetRevision: main
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+      syncOptions:
+      - CreateNamespace=true
+      - Replace=true  # Force le remplacement des ressources
