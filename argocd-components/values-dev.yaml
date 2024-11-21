@@ -203,6 +203,9 @@ apps:
     source:
       repoURL: https://github.com/MiletoCarmelo/DEVOPS_HELM_IB.git
       path: .
+      helm:       # Ajout de cette section
+        valueFiles:        # Spécifier le fichier values.yaml
+          - values.yaml    # ou values.dev.yaml si vous avez des fichiers par environnement
       targetRevision: main
       directory:
         recurse: true
