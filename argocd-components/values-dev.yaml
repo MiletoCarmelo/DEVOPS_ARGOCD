@@ -2,6 +2,7 @@
 projects:
   - name: infrastructure
   - name: quant-cm
+  - name: qantor-capital
 
 # Define repository configurations
 subChartRepositories:
