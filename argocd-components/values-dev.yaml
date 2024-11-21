@@ -195,3 +195,14 @@ apps:
       helm:
         valueFiles: values.dev.yaml
       targetRevision: main
+
+  - name: ib-dev
+    namespace: trading
+    project: qantor-capital
+    source:
+      repoURL: https://github.com/MiletoCarmelo/DEVOPS_HELM_IB.git
+      path: .
+      targetRevision: main
+      directory:
+        recurse: true
+        jsonnet: {}
