@@ -206,6 +206,3 @@ apps:
       helm:       # Ajout de cette section
         valueFiles: values.yaml    # ou values.dev.yaml si vous avez des fichiers par environnement
       targetRevision: main
-      directory:
-        recurse: true
-        jsonnet: {}
