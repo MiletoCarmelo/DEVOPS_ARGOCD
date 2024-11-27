@@ -212,3 +212,20 @@ apps:
       syncOptions:
       - CreateNamespace=true
       - Replace=true  # Force le remplacement des ressources
+
+  - name: dagster-dev
+    namespace: trading
+    project: quant-cm
+    source:
+      repoURL: https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_dagster.git
+      path: umbrella-dagster
+      helm:       # Ajout de cette section
+        valueFiles: values.dev.yaml    # ou values.dev.yaml si vous avez des fichiers par environnement
+      targetRevision: main
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+      syncOptions:
+      - CreateNamespace=true
+      - Replace=true  # Force le remplacement des ressources
