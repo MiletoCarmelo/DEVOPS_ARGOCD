@@ -217,7 +217,7 @@ apps:
       - CreateNamespace=true
       - Replace=true  # Force le remplacement des ressources
 
-  - name: dagster-app-dev
+  - name: dagster-dev
     namespace: dagster
     project: quant-cm
     source:
