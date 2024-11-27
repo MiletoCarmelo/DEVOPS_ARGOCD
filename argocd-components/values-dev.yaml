@@ -215,7 +215,7 @@ apps:
 
   - name: dagster-dev
     namespace: trading
-    project: quant-cm
+    project: dagster
     source:
       repoURL: https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_dagster.git
       path: umbrella-dagster
