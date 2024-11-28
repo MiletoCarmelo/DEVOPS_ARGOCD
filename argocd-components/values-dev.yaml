@@ -233,3 +233,19 @@ apps:
       syncOptions:
       - CreateNamespace=true
       - Replace=true  # Force le remplacement des ressources
+
+  - name: dagster-pipeline-successtest
+    namespace: dagster  # même namespace que l'orchestrateur
+    project: quant-cm
+    source:
+      repoURL: https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_DAGSTER_PIPELINE_successtest.git
+      path: .
+      helm:
+        valueFiles: values.yaml
+      targetRevision: main
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+      syncOptions:
+      - CreateNamespace=true
