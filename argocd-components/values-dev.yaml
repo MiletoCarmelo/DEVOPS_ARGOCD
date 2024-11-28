@@ -222,7 +222,7 @@ apps:
     project: quant-cm
     source:
       repoURL: https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_dagster.git
-      path: umbrella-dagster
+      path: dagster-components
       helm:       # Ajout de cette section
         valueFiles: values.dev.yaml    # ou values.dev.yaml si vous avez des fichiers par environnement
       targetRevision: main
