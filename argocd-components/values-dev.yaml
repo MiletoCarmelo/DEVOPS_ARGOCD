@@ -218,7 +218,7 @@ apps:
       - Replace=true  # Force le remplacement des ressources
 
   - name: dagster-dev
-    namespace: dagster
+    namespace: dagster-dev
     project: quant-cm
     source:
       repoURL: https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_dagster.git
@@ -235,7 +235,7 @@ apps:
       - Replace=true  # Force le remplacement des ressources
 
   - name: dagster-pipeline-successtest
-    namespace: dagster  # même namespace que l'orchestrateur
+    namespace: dagster-dev  # même namespace que l'orchestrateur
     project: quant-cm
     source:
       repoURL: https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_DAGSTER_PIPELINE_successtest.git
