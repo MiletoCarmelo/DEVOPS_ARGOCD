@@ -266,3 +266,19 @@ apps:
         selfHeal: true
       syncOptions:
       - CreateNamespace=true
+
+  - name: zookeeper-dev
+    namespace: kafka-dev
+    project: quant-cm
+    source:
+      repoURL: https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_zookeeper.git
+      path: zookeeper-components
+      helm:
+        valueFiles: values.yaml
+    targetRevision: main
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+      syncOptions:
+        - CreateNamespace=true
