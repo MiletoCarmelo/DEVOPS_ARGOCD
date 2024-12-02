@@ -4,6 +4,7 @@ projects:
   - name: quant-cm
   - name: qantor-capital
   - name: dagster
+  - name: kafka
 
 # Define repository configurations
 subChartRepositories:
