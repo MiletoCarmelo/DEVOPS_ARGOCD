@@ -274,7 +274,7 @@ apps:
       repoURL: https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_zookeeper.git
       path: zookeeper-components
       helm:
-        valueFiles: values.yaml
+        valueFiles: values.dev.yaml
     targetRevision: main
     syncPolicy:
       automated:
