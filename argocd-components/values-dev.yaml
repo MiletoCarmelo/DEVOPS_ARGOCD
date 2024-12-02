@@ -255,7 +255,7 @@ apps:
     project: quant-cm
     source:
       repoURL: https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_kafka.git
-      path: .
+      path: kafka-components
       helm:
         valueFiles: values.yaml
       targetRevision: main
