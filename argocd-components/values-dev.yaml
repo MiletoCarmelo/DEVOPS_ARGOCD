@@ -289,9 +289,11 @@ apps:
     namespace: kafka-dev
     project: quant-cm
     source:
-      repoURL: https://github.com/MiletoCarmelo/finance_price_streamer.git
-      path: overlays/dev
-      targetRevision: main
+      repoURL: https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_finance_price_streamer.git
+      path: umbrella-finance-price-streamer
+      helm:
+        valueFiles: values.dev.yaml
+    targetRevision: main
     syncPolicy:
       automated:
         prune: true
