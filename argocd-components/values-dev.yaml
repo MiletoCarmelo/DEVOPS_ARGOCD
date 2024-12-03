@@ -266,6 +266,7 @@ apps:
         selfHeal: true
       syncOptions:
       - CreateNamespace=true
+      - Replace=true
 
   - name: zookeeper-dev
     namespace: kafka-dev
@@ -281,4 +282,20 @@ apps:
         prune: true
         selfHeal: true
       syncOptions:
-        - CreateNamespace=true
+      - CreateNamespace=true
+      - Replace=true
+
+  - name: price-streamer-dev
+    namespace: kafka-dev
+    project: quant-cm
+    source:
+      repoURL: https://github.com/MiletoCarmelo/finance_price_streamer.git
+      path: overlays/dev
+      targetRevision: main
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+      syncOptions:
+      - CreateNamespace=true
+      - Replace=true
