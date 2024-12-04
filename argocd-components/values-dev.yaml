@@ -303,26 +303,6 @@ apps:
       - Replace=true
 
   # nécéssaire pour kafak app - streaming 
-  - name: prometheus-crds
-    namespace: monitoring
-    project: infrastructure
-    source:
-      repoURL: https://github.com/prometheus-community/helm-charts
-      path: charts/kube-prometheus-stack/charts/crds
-      targetRevision: HEAD
-      directory:
-        recurse: true
-    destination:
-      server: https://kubernetes.default.svc
-      namespace: monitoring
-    syncPolicy:
-      syncOptions:
-        - CreateNamespace=true
-        - Replace=true
-      automated:
-        prune: false
-        selfHeal: true
-
   - name: prometheus
     namespace: monitoring
     project: infrastructure
@@ -333,33 +313,36 @@ apps:
       helm:
         values: |
           prometheusOperator:
-            createCustomResourceDefinitions: false
-          fullnameOverride: prometheus
-          defaultRules:
-            create: true
-          kubeStateMetrics:
-            enabled: true
-          nodeExporter:
-            enabled: true
-          alertmanager:
-            enabled: true
+            createCustomResourceDefinitions: true
+            admissionWebhooks:
+              enabled: false  # Désactive les webhooks pour simplifier
+            tls:
+              enabled: false # Désactive TLS pour simplifier
           prometheus:
-            enabled: true
             prometheusSpec:
               retention: 1d
               resources:
                 requests:
-                  cpu: 200m
-                  memory: 200Mi
-              podMonitorSelectorNilUsesHelmValues: false
-              serviceMonitorSelectorNilUsesHelmValues: false
-    destination:
-      server: https://kubernetes.default.svc
-      namespace: monitoring
+                  memory: "256Mi"
+                  cpu: "100m"
+                limits:
+                  memory: "512Mi"
+                  cpu: "200m"
+          alertmanager:
+            enabled: false  # Désactive temporairement
+          grafana:
+            enabled: false  # Désactive temporairement
+          kubeStateMetrics:
+            enabled: false  # Désactive temporairement
+          nodeExporter:
+            enabled: false  # Désactive temporairement
     syncPolicy:
       syncOptions:
         - CreateNamespace=true
         - ServerSideApply=true
+        - Replace=true
+        - PruneLast=true
+        - PrunePropagationPolicy=foreground
       automated:
         prune: true
         selfHeal: true
