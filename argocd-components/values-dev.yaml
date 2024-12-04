@@ -303,23 +303,22 @@ apps:
       - Replace=true
 
   - name: prometheus-monitoring
-      namespace: monitoring
-      project: infrastructure
-      source:
-        repoURL: https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_prometheus.git
-        path: umbrella_prometheus
-        targetRevision: main
-        helm:
-          valueFiles:
-            - values.yaml
-          parameters:
-            - name: "kube-prometheus-stack.prometheusOperator.createCustomResourceDefinitions"
-              value: "true"
-      syncPolicy:
-      syncOptions:
-        - CreateNamespace=true
-        - ServerSideApply=true
-        - Replace=true  # Ajout important pour forcer le remplacement
-      automated:
-        prune: true
-        selfHeal: true
+    namespace: monitoring
+    project: infrastructure
+    source:
+      repoURL: https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_prometheus.git
+      path: umbrella_prometheus
+      targetRevision: main
+      helm:
+        valueFiles: values.yaml
+        parameters:
+          - name: "kube-prometheus-stack.prometheusOperator.createCustomResourceDefinitions"
+            value: "true"
+    syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+      - Replace=true  # Ajout important pour forcer le remplacement
+    automated:
+      prune: true
+      selfHeal: true
