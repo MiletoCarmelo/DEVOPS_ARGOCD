@@ -15,6 +15,22 @@ subChartRepositories:
     project: quant-cm
     url: https://raw.githubusercontent.com/miletocarmelo/devpos_helm_generic_dagster_backend/github-pages
     
+config:
+  # Autres configurations existantes...
+  resource.customizations: |
+    monitoring.coreos.com/Prometheus:
+      ignoreDifferences: |
+        jsonPointers:
+        - /metadata/annotations
+    monitoring.coreos.com/PrometheusRule:
+      ignoreDifferences: |
+        jsonPointers:
+        - /metadata/annotations
+    monitoring.coreos.com/ServiceMonitor:
+      ignoreDifferences: |
+        jsonPointers:
+        - /metadata/annotations
+        
 # Define applications
 apps:
 #   - name: tailscale
@@ -317,7 +333,6 @@ apps:
         - CreateNamespace=true
         - Replace=true
         - ServerSideApply=true
-        - ValidateSpec=false
       automated:
         prune: true
         selfHeal: true
@@ -346,7 +361,6 @@ apps:
       syncOptions:
         - CreateNamespace=true
         - ServerSideApply=true
-        - ValidateSpec=false
       automated:
         prune: true
         selfHeal: true
