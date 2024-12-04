@@ -317,6 +317,7 @@ apps:
         - CreateNamespace=true
         - Replace=true
         - ServerSideApply=true
+        - ValidateSpec=false
       automated:
         prune: true
         selfHeal: true
@@ -345,6 +346,7 @@ apps:
       syncOptions:
         - CreateNamespace=true
         - ServerSideApply=true
+        - ValidateSpec=false
       automated:
         prune: true
         selfHeal: true
