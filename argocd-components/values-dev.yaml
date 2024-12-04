@@ -309,7 +309,7 @@ apps:
     source:
       chart: kube-prometheus-stack
       repoURL: https://prometheus-community.github.io/helm-charts
-      targetRevision: Latest
+      targetRevision: 66.3.0
       syncPolicy:
         automated:
           prune: true
