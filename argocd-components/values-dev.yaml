@@ -309,7 +309,7 @@ apps:
     project: infrastructure
     source:
       repoURL: https://github.com/prometheus-community/helm-charts.git
-      path: charts/kube-prometheus-stack/crds
+      path: charts/kube-prometheus-stack/charts/crds
       targetRevision: main
     syncPolicy:
       syncOptions:
