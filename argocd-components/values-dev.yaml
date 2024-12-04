@@ -301,3 +301,21 @@ apps:
       syncOptions:
       - CreateNamespace=true
       - Replace=true
+
+  - name: prometheus
+    namespace: monitoring
+    project: infrastructure
+    source:
+      repoURL: https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_prometheus.git
+      path: .
+      targetRevision: main
+      helm:
+        valueFiles: 
+          - values.yaml
+    syncPolicy:
+      syncOptions:
+        - CreateNamespace=true
+        - ServerSideApply=true
+      automated:
+        prune: true
+        selfHeal: true
