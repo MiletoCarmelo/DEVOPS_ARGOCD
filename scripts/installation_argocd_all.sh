@@ -1,18 +1,17 @@
-# attention : a run dans le dossier mere de DEVOPS_ARGOCD avec : 
+#!/bin/bash
+
+# attention : a run dans le dossier mere de DEVOPS_ARGOCD avec :
 # ./scripts/installation_argocd_namespace.sh (sh ./scripts/installation_argocd_namespace.sh)
 
-# check if macbook or linux 
+# check if macbook or linux
 OS_TYPE=$(uname)
 
-# get imputs : 
-# Avec une vérification du nombre d'arguments
-echo "purge minikube / k3s ? (yes or no)" 
+# get inputs :
+echo "purge minikube / k3s ? (yes or no)"
 read purge
 
-# check if minikube is running if not start it :
 if [ "$purge" = "yes" ]; then
-
-# Encoder la configuration complète en base64
+    # Encoder la configuration complète en base64
     if [[ "$OS_TYPE" == "Darwin" ]]; then
         if ! minikube status > /dev/null 2>&1; then
             echo "minikube is not started"
@@ -33,68 +32,99 @@ if [ "$purge" = "yes" ]; then
         kubectl delete all --all -A
         # Puis désinstaller
         k3s-uninstall.sh
-        # Puis le réinstaller 
+        # Puis le réinstaller
         curl -sfL https://get.k3s.io | sh -
         # Configurer l'accès
         mkdir -p ~/.kube
         sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
         sudo chown $USER:$USER ~/.kube/config
         sudo chmod 600 ~/.kube/config
-
         # Ajouter la variable d'environnement
         export KUBECONFIG=~/.kube/config
         echo "export KUBECONFIG=~/.kube/config" >> ~/.bashrc
     fi
 
-    # check if namespace argocd already exist if not install it :
+    # check if namespace argocd exists
     if kubectl get namespace argocd > /dev/null 2>&1; then
-        echo "namespace argocd already exist"
+        echo "namespace argocd already exists"
     else
+        echo "Creating ArgoCD namespace and installing ArgoCD..."
         kubectl create namespace argocd
         kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-        echo "namespace argocd created"
+        
+        # Wait for all ArgoCD pods to be ready
+        echo "Waiting for ArgoCD pods to be ready..."
+        kubectl wait --for=condition=Ready pods --all -n argocd --timeout=300s
     fi
-    echo "argocd processing ...." 
-    sleep 30
 fi
 
-kubectl wait --for=condition=Ready pods --all -n argocdyay -S argocd
-
-# define variable for password
-export PASS=$(kubectl --namespace argocd get secret argocd-initial-admin-secret --output jsonpath="{.data.password}" \
-        | base64 --decode)
-echo $PASS
-
-# define variable env for port used for argo_cd : 
+# define variables for argocd setup
 export PORT=8090
 export BASE_HOST=localhost:$PORT
-echo $BASE_HOST
+echo "ArgoCD will be accessible at: $BASE_HOST"
 
-# check if port 8090 is already used if yes kill the process :
+# check if port 8090 is already used
 if lsof -Pi :$PORT -sTCP:LISTEN -t >/dev/null ; then
+    echo "Port $PORT is in use. Killing existing process..."
     kill -9 $(lsof -t -i:$PORT)
-    echo "port $PORT is already used, and the process is killed"
+    sleep 2
 fi
-# forward port 443 to 8090 : 
-kubectl --namespace argocd port-forward svc/argocd-server 8090:443 > /dev/null 2>&1 & 
+
+# Wait for initial admin secret to be available
+echo "Waiting for ArgoCD initial admin secret..."
+while ! kubectl -n argocd get secret argocd-initial-admin-secret &>/dev/null; do
+    echo "Waiting for initial admin secret to be created..."
+    sleep 10
+done
+
+# Get initial admin password
+export PASS=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
+echo "Initial admin password retrieved"
+
+# Setup port forwarding
+echo "Setting up port forwarding..."
+kubectl port-forward svc/argocd-server -n argocd $PORT:443 &
 PORT_FORWARD_PID=$!
-sleep 5
 
-# Pour arrêter le port-forward plus tard si nécessaire :
-# kill $PORT_FORWARD_PID
-echo "port 443 is forwarded to $PORT"
+# Wait for port-forward to be established
+echo "Waiting for port-forward to be established..."
+for i in {1..12}; do
+    if nc -z localhost $PORT; then
+        echo "Port-forward is ready"
+        break
+    fi
+    if [ $i -eq 12 ]; then
+        echo "Port-forward failed to establish"
+        kill $PORT_FORWARD_PID 2>/dev/null
+        exit 1
+    fi
+    sleep 5
+done
 
-# login into argocd:
+# Login to ArgoCD
+echo "Logging into ArgoCD..."
 argocd login --insecure --username admin --password $PASS --grpc-web $BASE_HOST
 
-# update password to Admin123 (to keep the same on firefox):
-argocd account update-password --current-password $PASS --new-password Admin123
+# Update password
+echo "Updating admin password..."
+argocd account update-password \
+    --current-password $PASS \
+    --new-password Admin123 \
+    --grpc-web
 
-# INSTALLATION DES METRICS DE CONTROLE USAGE MEMOIRE :
+# Install metrics server
+echo "Installing metrics server..."
 kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
 
-# login into argocd:
+# Login with new password
+echo "Logging in with new password..."
 argocd login --insecure --username admin --password Admin123 --grpc-web $BASE_HOST
 
-# apply the argocd app :
+# Apply ArgoCD application
+echo "Applying ArgoCD application configuration..."
 kubectl apply -f argocd-components-app.yaml
+
+echo "Installation complete!"
+echo "You can now access ArgoCD UI at: https://$BASE_HOST"
+echo "Username: admin"
+echo "Password: Admin123"

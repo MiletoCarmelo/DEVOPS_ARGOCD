@@ -304,7 +304,24 @@ apps:
 
   # nécéssaire pour kafak app - streaming 
   # Première application pour les CRDs
-  # CRDs Installation
+  - name: prometheus-crds
+    namespace: monitoring
+    project: infrastructure
+    source:
+      repoURL: https://github.com/prometheus-community/helm-charts.git
+      path: charts/kube-prometheus-stack/crds
+      targetRevision: main
+    syncPolicy:
+      syncOptions:
+        - CreateNamespace=true
+        - Replace=true
+        - RespectIgnoreDifferences=true
+      automated:
+        prune: false  # Important pour les CRDs
+        selfHeal: true
+
+  # nécéssaire pour kafak app - streaming 
+  # Deuxième application pour Prometheus lui-même
   - name: prometheus
     namespace: monitoring
     project: infrastructure
@@ -314,11 +331,20 @@ apps:
       targetRevision: 55.5.0
       helm:
         values: |
+          prometheusOperator:
+            createCustomResourceDefinitions: false  # Car déjà créé par l'app précédente
           prometheus:
             prometheusSpec:
               podMonitorSelectorNilUsesHelmValues: false
               serviceMonitorSelectorNilUsesHelmValues: false
     syncPolicy:
       syncOptions:
-        - ValidateSpec=false  # On revient à cette solution qui marchait
         - CreateNamespace=true
+        - ServerSideApply=true
+        - RespectIgnoreDifferences=true
+      automated:
+        prune: true
+        selfHeal: true
+    metadata:
+        annotations:
+          argocd.argoproj.io/sync-wave: "1"  # Un nombre plus grand que celui des CRDs
