@@ -14,7 +14,7 @@ subChartRepositories:
   - name: generic-dagster-backend
     project: quant-cm
     url: https://raw.githubusercontent.com/miletocarmelo/devpos_helm_generic_dagster_backend/github-pages
-
+    
 # Define applications
 apps:
 #   - name: tailscale
@@ -301,48 +301,3 @@ apps:
       syncOptions:
       - CreateNamespace=true
       - Replace=true
-
-  # nécéssaire pour kafak app - streaming 
-  - name: prometheus
-    namespace: monitoring
-    project: infrastructure
-    source:
-      chart: kube-prometheus-stack
-      repoURL: https://prometheus-community.github.io/helm-charts
-      targetRevision: 66.3.0
-      helm:
-        values: |
-          prometheusOperator:
-            createCustomResourceDefinitions: true
-            admissionWebhooks:
-              enabled: false  # Désactive les webhooks pour simplifier
-            tls:
-              enabled: false # Désactive TLS pour simplifier
-          prometheus:
-            prometheusSpec:
-              retention: 1d
-              resources:
-                requests:
-                  memory: "256Mi"
-                  cpu: "100m"
-                limits:
-                  memory: "512Mi"
-                  cpu: "200m"
-          alertmanager:
-            enabled: false  # Désactive temporairement
-          grafana:
-            enabled: false  # Désactive temporairement
-          kubeStateMetrics:
-            enabled: false  # Désactive temporairement
-          nodeExporter:
-            enabled: false  # Désactive temporairement
-    syncPolicy:
-      syncOptions:
-        - CreateNamespace=true
-        - ServerSideApply=true
-        - Replace=true
-        - PruneLast=true
-        - PrunePropagationPolicy=foreground
-      automated:
-        prune: true
-        selfHeal: true
