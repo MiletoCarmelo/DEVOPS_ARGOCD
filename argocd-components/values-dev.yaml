@@ -305,21 +305,21 @@ apps:
   # nécéssaire pour kafak app - streaming 
   # Première application pour les CRDs
   # CRDs Installation
-- name: prometheus-crds
-  namespace: monitoring
-  project: infrastructure
-  source:
-    chart: prometheus-operator-crds
-    repoURL: https://prometheus-community.github.io/helm-charts
-    targetRevision: 6.0.0
-  syncPolicy:
-    syncOptions:
-      - CreateNamespace=true
-      - Replace=true
-      - ServerSideApply=true
-    automated:
-      prune: true
-      selfHeal: true
+  - name: prometheus-crds
+    namespace: monitoring
+    project: infrastructure
+    source:
+      chart: prometheus-operator-crds
+      repoURL: https://prometheus-community.github.io/helm-charts
+      targetRevision: 6.0.0
+    syncPolicy:
+      syncOptions:
+        - CreateNamespace=true
+        - Replace=true
+        - ServerSideApply=true
+      automated:
+        prune: true
+        selfHeal: true
 
   # Prometheus Stack Installation
   - name: prometheus
@@ -328,7 +328,7 @@ apps:
     source:
       chart: kube-prometheus-stack
       repoURL: https://prometheus-community.github.io/helm-charts
-      targetRevision: 55.5.0
+      targetRevision: 66.3.0
       helm:
         values: |
           prometheus:
