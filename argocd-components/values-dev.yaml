@@ -307,8 +307,8 @@ apps:
     namespace: monitoring
     project: infrastructure
     source:
-      repoURL: https://raw.githubusercontent.com/prometheus-community/helm-charts/main/charts/kube-prometheus-stack/charts/crds/
-      path: ""
+      repoURL: https://github.com/prometheus-community/helm-charts
+      path: charts/kube-prometheus-stack/charts/crds
       targetRevision: HEAD
       directory:
         recurse: true
