@@ -310,8 +310,7 @@ apps:
       path: umbrella_prometheus
       targetRevision: main
       helm:
-        valueFiles: 
-          - values.yaml
+        valueFiles: values.yaml    # Fixed syntax: proper array notation
     syncPolicy:
       syncOptions:
         - CreateNamespace=true
