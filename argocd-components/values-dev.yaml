@@ -307,7 +307,7 @@ apps:
     project: infrastructure
     source:
       repoURL: https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_prometheus.git
-      path: .
+      path: umbrella_prometheus
       targetRevision: main
       helm:
         valueFiles: 
