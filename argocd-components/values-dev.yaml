@@ -303,48 +303,63 @@ apps:
       - Replace=true
 
   # nécéssaire pour kafak app - streaming 
-  # Première application pour les CRDs
   - name: prometheus-crds
     namespace: monitoring
     project: infrastructure
     source:
-      repoURL: https://github.com/prometheus-community/helm-charts.git
-      path: charts/kube-prometheus-stack/charts/crds
-      targetRevision: main
+      repoURL: https://raw.githubusercontent.com/prometheus-community/helm-charts/main/charts/kube-prometheus-stack/charts/crds/
+      path: ""
+      targetRevision: HEAD
+      directory:
+        recurse: true
+    destination:
+      server: https://kubernetes.default.svc
+      namespace: monitoring
     syncPolicy:
       syncOptions:
         - CreateNamespace=true
         - Replace=true
-        - RespectIgnoreDifferences=true
       automated:
-        prune: false  # Important pour les CRDs
+        prune: false
         selfHeal: true
 
-  # nécéssaire pour kafak app - streaming 
-  # Deuxième application pour Prometheus lui-même
   - name: prometheus
     namespace: monitoring
     project: infrastructure
     source:
       chart: kube-prometheus-stack
       repoURL: https://prometheus-community.github.io/helm-charts
-      targetRevision: 55.5.0
+      targetRevision: 66.3.0
       helm:
         values: |
           prometheusOperator:
-            createCustomResourceDefinitions: false  # Car déjà créé par l'app précédente
+            createCustomResourceDefinitions: false
+          fullnameOverride: prometheus
+          defaultRules:
+            create: true
+          kubeStateMetrics:
+            enabled: true
+          nodeExporter:
+            enabled: true
+          alertmanager:
+            enabled: true
           prometheus:
+            enabled: true
             prometheusSpec:
+              retention: 1d
+              resources:
+                requests:
+                  cpu: 200m
+                  memory: 200Mi
               podMonitorSelectorNilUsesHelmValues: false
               serviceMonitorSelectorNilUsesHelmValues: false
+    destination:
+      server: https://kubernetes.default.svc
+      namespace: monitoring
     syncPolicy:
       syncOptions:
         - CreateNamespace=true
         - ServerSideApply=true
-        - RespectIgnoreDifferences=true
       automated:
         prune: true
         selfHeal: true
-    metadata:
-        annotations:
-          argocd.argoproj.io/sync-wave: "1"  # Un nombre plus grand que celui des CRDs
