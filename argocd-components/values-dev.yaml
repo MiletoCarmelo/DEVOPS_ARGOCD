@@ -307,7 +307,7 @@ apps:
     project: infrastructure
     source:
       repoURL: https://github.com/prometheus-community/helm-charts.git
-      targetRevision: main  # ou la branche/tag appropriée
+      targetRevision: main
       path: charts/kube-prometheus-stack/charts/crds
       directory:
         recurse: true
@@ -319,9 +319,9 @@ apps:
         - CreateNamespace=true
         - Replace=true
         - ServerSideApply=true
-        - ApplyOutOfSyncOnly=true  # Ajout important
+        - ApplyOutOfSyncOnly=true
       automated:
-        prune: true  # Important pour éviter la suppression accidentelle
+        prune: true
         selfHeal: true
 
   - name: prometheus-monitoring
