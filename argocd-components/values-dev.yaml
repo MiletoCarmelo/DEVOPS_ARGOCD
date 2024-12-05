@@ -302,6 +302,26 @@ apps:
       - CreateNamespace=true
       - Replace=true
 
+- name: prometheus-crds
+    namespace: monitoring
+    project: infrastructure
+    source:
+      repoURL: https://github.com/prometheus-community/helm-charts.git
+      targetRevision: kube-prometheus-stack-66.3.0
+      path: charts/kube-prometheus-stack/crds
+      directory:
+        recurse: true
+    destination:
+      server: https://kubernetes.default.svc
+      namespace: monitoring
+    syncPolicy:
+      syncOptions:
+        - CreateNamespace=true
+        - Replace=true
+      automated:
+        prune: true
+        selfHeal: true
+
   - name: prometheus-monitoring
     namespace: monitoring
     project: infrastructure
@@ -313,12 +333,19 @@ apps:
         valueFiles: values.yaml
         parameters:
           - name: "kube-prometheus-stack.prometheusOperator.createCustomResourceDefinitions"
-            value: "true"
+            value: "false"  # Changé à false car les CRDs sont installés séparément
     syncPolicy:
-    syncOptions:
-      - CreateNamespace=true
-      - ServerSideApply=true
-      - Replace=true  # Ajout important pour forcer le remplacement
-    automated:
-      prune: true
-      selfHeal: true
+      syncOptions:
+        - CreateNamespace=true
+        - ServerSideApply=true
+        - Replace=true
+      automated:
+        prune: true
+        selfHeal: true
+    ignoreDifferences:
+      - group: apiextensions.k8s.io
+        kind: CustomResourceDefinition
+        jsonPointers:
+          - /metadata/annotations
+    depends_on:
+      - name: prometheus-crds
