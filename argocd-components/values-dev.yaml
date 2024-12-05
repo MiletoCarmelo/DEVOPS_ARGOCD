@@ -335,7 +335,10 @@ apps:
         valueFiles: values.yaml
         parameters:
           - name: "kube-prometheus-stack.prometheusOperator.createCustomResourceDefinitions"
-            value: "false"  # Changé à false car les CRDs sont installés séparément
+            value: "false"  # Assurez-vous que les CRDs ne sont pas recréés
+    destination:
+      server: https://kubernetes.default.svc
+      namespace: monitoring
     syncPolicy:
       syncOptions:
         - ServerSideApply=true
@@ -350,4 +353,4 @@ apps:
         jsonPointers:
           - /metadata/annotations
     depends_on:
-      - name: prometheus-crds
+      - name: prometheus-crds  # Assure-toi que cette application dépend de l'installation des CRDs
