@@ -302,25 +302,32 @@ apps:
       - CreateNamespace=true
       - Replace=true
 
-  - name: prometheus-crds
-    namespace: monitoring
-    project: infrastructure
-    source:
-      repoURL: https://github.com/prometheus-community/helm-charts.git
-      targetRevision: kube-prometheus-stack-66.3.0
-      path: charts/kube-prometheus-stack/charts/crds
-      directory:
-        recurse: true
-    destination:
-      server: https://kubernetes.default.svc
+    - name: prometheus-crds
       namespace: monitoring
-    syncPolicy:
-      syncOptions:
-        - CreateNamespace=true
-        - Replace=true
-      automated:
-        prune: true
-        selfHeal: true
+      project: infrastructure
+      source:
+        repoURL: https://github.com/prometheus-community/helm-charts.git
+        targetRevision: kube-prometheus-stack-66.3.0
+        path: charts/kube-prometheus-stack/charts/crds
+        directory:
+          recurse: true
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: monitoring
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+          - Replace=true
+          - ServerSideApply=true  # Ajout de cette option
+        automated:
+          prune: true
+          selfHeal: true
+      ignoreDifferences:  # Ajout de cette section
+        - group: apiextensions.k8s.io
+          kind: CustomResourceDefinition
+          jsonPointers:
+            - /metadata/annotations
+            - /status
 
   - name: prometheus-monitoring
     namespace: monitoring
