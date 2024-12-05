@@ -21,7 +21,18 @@ if [ "$purge" = "yes" ]; then
             echo "minikube purged"
         fi
         echo "🖥️ Vous êtes sur macOS."
-        minikube start --driver=hyperkit
+        minikube start  --driver=hyperkit \
+                        --memory=6g \
+                        --cpus=4 \
+                        --extra-config=apiserver.max-mutating-requests-inflight=2000 \
+                        --extra-config=apiserver.max-requests-inflight=4000 \
+                        --extra-config=etcd.quota-backend-bytes=4294967296 \
+                        --extra-config=kubelet.authentication-token-webhook=true \
+                        --extra-config=kubelet.authorization-mode=Webhook \
+                        --extra-config=scheduler.bind-address=0.0.0.0 \
+                        --extra-config=controller-manager.bind-address=0.0.0.0
+
+                        
         echo "minikube started"
         minikube addons enable ingress
     elif [[ "$OS_TYPE" == "Linux" ]]; then
