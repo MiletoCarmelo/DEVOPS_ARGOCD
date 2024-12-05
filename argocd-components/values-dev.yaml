@@ -338,7 +338,7 @@ apps:
             value: "false"  # Assurez-vous que les CRDs ne sont pas recréés
     destination:
       server: https://kubernetes.default.svc
-      namespace: monitoring
+      namespace: monitoringa
     syncPolicy:
       syncOptions:
         - ServerSideApply=true
