@@ -327,7 +327,7 @@ apps:
     project: infrastructure
     source:
       repoURL: https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_prometheus.git
-      path: manifests  # Dossier pour les autres ressources
+      path: umbrella_prometheus  # Dossier pour les autres ressources
       targetRevision: main
     syncPolicy:
       syncOptions:
