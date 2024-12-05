@@ -321,7 +321,7 @@ apps:
         - ServerSideApply=true
         - ApplyOutOfSyncOnly=true  # Ajout important
       automated:
-        prune: false  # Important pour éviter la suppression accidentelle
+        prune: true  # Important pour éviter la suppression accidentelle
         selfHeal: true
 
   - name: prometheus-monitoring
