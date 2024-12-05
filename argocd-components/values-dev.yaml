@@ -302,52 +302,38 @@ apps:
       - CreateNamespace=true
       - Replace=true
 
-  - name: prometheus-crds
+  # Première application pour le setup (CRDs)
+  - name: prometheus-setup
     namespace: monitoring
     project: infrastructure
     source:
-      repoURL: https://github.com/prometheus-community/helm-charts.git
-      targetRevision: main  # ou la branche/tag appropriée
-      path: charts/kube-prometheus-stack/charts/crds
-      directory:
-        recurse: true
+      repoURL: https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_prometheus.git
+      path: manifests/setup  # Dossier à créer contenant les CRDs
+      targetRevision: main
     destination:
       server: https://kubernetes.default.svc
       namespace: monitoring
     syncPolicy:
       syncOptions:
         - CreateNamespace=true
-        - Replace=true
-        - ServerSideApply=true
-        - ApplyOutOfSyncOnly=true  # Ajout important
+        - ServerSideApply=true  # Important pour les gros CRDs
       automated:
-        prune: false  # Important pour éviter la suppression accidentelle
+        prune: false  # Protection pour les CRDs
         selfHeal: true
 
+  # Deuxième application pour les composants principaux
   - name: prometheus-monitoring
     namespace: monitoring
     project: infrastructure
     source:
       repoURL: https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_prometheus.git
-      path: umbrella_prometheus
+      path: manifests  # Dossier pour les autres ressources
       targetRevision: main
-      helm:
-        valueFiles: values.yaml
-        parameters:
-          - name: "kube-prometheus-stack.prometheusOperator.createCustomResourceDefinitions"
-            value: "false"  # Changé à false car les CRDs sont installés séparément
     syncPolicy:
       syncOptions:
         - CreateNamespace=true
-        - ServerSideApply=true
-        - Replace=true
       automated:
         prune: true
         selfHeal: true
-    ignoreDifferences:
-      - group: apiextensions.k8s.io
-        kind: CustomResourceDefinition
-        jsonPointers:
-          - /metadata/annotations
     depends_on:
-      - name: prometheus-crds
+      - prometheus-setup
