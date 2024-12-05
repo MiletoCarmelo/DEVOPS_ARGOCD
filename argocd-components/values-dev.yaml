@@ -338,9 +338,9 @@ apps:
             value: "false"  # Changé à false car les CRDs sont installés séparément
     syncPolicy:
       syncOptions:
-        - CreateNamespace=true
         - ServerSideApply=true
         - Replace=true
+        - CreateNamespace=true
       automated:
         prune: true
         selfHeal: true
