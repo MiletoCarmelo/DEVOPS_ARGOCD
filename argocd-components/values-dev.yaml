@@ -308,7 +308,7 @@ apps:
     source:
       repoURL: https://github.com/prometheus-community/helm-charts.git
       targetRevision: kube-prometheus-stack-66.3.0
-      path: charts/kube-prometheus-stack/crds
+      path: charts/kube-prometheus-stack/charts/crds
       directory:
         recurse: true
     destination:
