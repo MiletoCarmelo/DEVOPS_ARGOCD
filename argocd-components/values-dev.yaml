@@ -302,7 +302,7 @@ apps:
       - CreateNamespace=true
       - Replace=true
 
-    - name: prometheus-crds
+  - name: prometheus-crds
     namespace: monitoring
     project: infrastructure
     source:
