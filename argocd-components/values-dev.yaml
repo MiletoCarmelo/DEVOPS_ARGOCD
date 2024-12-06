@@ -129,27 +129,32 @@ apps:
       helm:       # Ajout de cette section
         valueFiles: values.yaml 
 
-  - name: ingress-nginx
-    namespace: ingress-nginx
-    project: infrastructure
-    source:
-      chart: ingress-nginx
-      repoURL: https://kubernetes.github.io/ingress-nginx
-      targetRevision: 4.11.3
-      helm:
-        values: |
-          controller:
-            publishService:
+- name: ingress-nginx
+  namespace: ingress-nginx
+  project: infrastructure
+  source:
+    chart: ingress-nginx
+    repoURL: https://kubernetes.github.io/ingress-nginx
+    targetRevision: 4.11.3
+    helm:
+      values: |
+        controller:
+          publishService:
+            enabled: true
+          service:
+            type: LoadBalancer
+            externalTrafficPolicy: Local
+          metrics:
+            enabled: true
+          admissionWebhooks:
+            enabled: true
+            patch:
               enabled: true
-            service:
-              type: LoadBalancer
-              externalTrafficPolicy: Local
-            metrics:
+            certManager:
               enabled: true
-            config:
-              use-forwarded-headers: "true"
-              use-proxy-protocol: "false"
-              proxy-real-ip-cidr: "192.168.68.0/24"  # Ajusté pour votre réseau Minikube
+          config:
+            use-forwarded-headers: "true"
+            use-proxy-protocol: "false"
 
   - name: ingress-setup-dev
     namespace: dev
