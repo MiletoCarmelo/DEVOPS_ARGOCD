@@ -316,7 +316,7 @@ apps:
             value: "false"
     destination:
       server: https://kubernetes.default.svc
-      namespace: monitoring  # Corrigé monitoringa -> monitoring
+      namespace: monitoring  # Corrigé monitoringa -> monitoring 333
     syncPolicy:
       syncOptions:
         - ServerSideApply=true
