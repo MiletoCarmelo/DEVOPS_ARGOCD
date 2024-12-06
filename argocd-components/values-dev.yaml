@@ -302,29 +302,7 @@ apps:
       - CreateNamespace=true
       - Replace=true
 
-  - name: prometheus-crds
-    namespace: monitoring
-    project: infrastructure
-    source:
-      repoURL: https://github.com/prometheus-community/helm-charts.git
-      targetRevision: main
-      path: charts/kube-prometheus-stack/charts/crds
-      directory:
-        recurse: true
-    destination:
-      server: https://kubernetes.default.svc
-      namespace: monitoring
-    syncPolicy:
-      syncOptions:
-        - CreateNamespace=true
-        - Replace=true
-        - ServerSideApply=true
-        - ApplyOutOfSyncOnly=true
-      automated:
-        prune: true
-        selfHeal: true
-
-  - name: prometheus-monitoring
+- name: prometheus-monitoring
     namespace: monitoring
     project: infrastructure
     source:
@@ -334,11 +312,11 @@ apps:
       helm:
         valueFiles: values.yaml
         parameters:
-          - name: "kube-prometheus-stack.prometheusOperator.createCustomResourceDefinitions"
-            value: "false"  # Assurez-vous que les CRDs ne sont pas recréés
+          - name: "prometheus.server.createCustomResourceDefinitions"
+            value: "false"
     destination:
       server: https://kubernetes.default.svc
-      namespace: monitoringa
+      namespace: monitoring  # Corrigé monitoringa -> monitoring
     syncPolicy:
       syncOptions:
         - ServerSideApply=true
@@ -353,4 +331,4 @@ apps:
         jsonPointers:
           - /metadata/annotations
     depends_on:
-      - name: prometheus-crds  # Assure-toi que cette application dépend de l'installation des CRDs
+      - name: prometheus-crds
