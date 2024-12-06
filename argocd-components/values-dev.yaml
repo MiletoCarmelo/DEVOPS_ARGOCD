@@ -302,33 +302,58 @@ apps:
       - CreateNamespace=true
       - Replace=true
 
-  - name: prometheus-monitoring
-    namespace: monitoring
-    project: infrastructure
+  # - name: prometheus-monitoring
+  #   namespace: monitoring
+  #   project: infrastructure
+  #   source:
+  #     repoURL: https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_prometheus.git
+  #     path: umbrella_prometheus
+  #     targetRevision: main
+  #     helm:
+  #       valueFiles: values.yaml
+  #       parameters:
+  #         - name: "prometheus.server.createCustomResourceDefinitions"
+  #           value: "false"
+  #   destination:
+  #     server: https://kubernetes.default.svc
+  #     namespace: monitoring  # Corrigé monitoringa -> monitoring
+  #   syncPolicy:
+  #     syncOptions:
+  #       - ServerSideApply=true
+  #       - Replace=true
+  #       - CreateNamespace=true
+  #     automated:
+  #       prune: true
+  #       selfHeal: true
+  #   ignoreDifferences:
+  #     - group: apiextensions.k8s.io
+  #       kind: CustomResourceDefinition
+  #       jsonPointers:
+  #         - /metadata/annotations
+  #   depends_on:
+  #     - name: prometheus-crds
+
+  - name: kube-prometheus-stack
+    namespace: argocd
+    project: default
     source:
-      repoURL: https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_prometheus.git
-      path: umbrella_prometheus
-      targetRevision: main
+      chart: kube-prometheus-stack
+      repoURL: https://prometheus-community.github.io/helm-charts
+      targetRevision: 66.3.1
       helm:
-        valueFiles: values.yaml
-        parameters:
-          - name: "prometheus.server.createCustomResourceDefinitions"
-            value: "false"
+        values: |
+          prometheus-node-exporter:
+            hostRootFsMount:
+              enabled: false
+          prometheusOperator:
+            admissionWebhooks:
+              failurePolicy: Ignore
     destination:
       server: https://kubernetes.default.svc
-      namespace: monitoring  # Corrigé monitoringa -> monitoring
+      namespace: monitoring
     syncPolicy:
       syncOptions:
         - ServerSideApply=true
-        - Replace=true
         - CreateNamespace=true
-      automated:
-        prune: true
-        selfHeal: true
-    ignoreDifferences:
-      - group: apiextensions.k8s.io
-        kind: CustomResourceDefinition
-        jsonPointers:
-          - /metadata/annotations
-    depends_on:
-      - name: prometheus-crds
+    finalizers:
+      - resources-finalizer.argocd.argoproj.io
