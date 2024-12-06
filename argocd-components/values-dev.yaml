@@ -142,7 +142,7 @@ apps:
             publishService:
               enabled: true
             service:
-              type: LoadBalancer
+              type: NodePort  # Au lieu de LoadBalancer
               externalTrafficPolicy: Local
             metrics:
               enabled: true
