@@ -302,7 +302,7 @@ apps:
       - CreateNamespace=true
       - Replace=true
 
-- name: prometheus-monitoring
+  - name: prometheus-monitoring
     namespace: monitoring
     project: infrastructure
     source:
