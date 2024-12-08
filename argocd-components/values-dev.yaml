@@ -291,7 +291,7 @@ apps:
       - Replace=true
 
   - name: price-streamer-dev
-    namespace: kafka-dev
+    namespace: finance-dev
     project: quant-cm
     source:
       repoURL: https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_finance_price_streamer.git
