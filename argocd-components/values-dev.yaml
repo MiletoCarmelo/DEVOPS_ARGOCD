@@ -290,6 +290,24 @@ apps:
       - CreateNamespace=true
       - Replace=true
 
+  - name: strimzi-kafka-operator
+    namespace: kafka-dev
+    project: quant-cm
+    source:
+      repoURL: https://github.com/strimzi/strimzi-kafka-operator.git
+      path: deploy/helm/strimzi-kafka-operator  # Chemin vers le chart Helm Strimzi dans le repo
+      helm:
+        valueFiles:
+          - values.yaml  # Si tu as des valeurs personnalisées, sinon laisse vide
+    targetRevision: main  # Utilise la branche de ton choix, comme 'main'
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+      syncOptions:
+        - CreateNamespace=true  # Crée le namespace si nécessaire
+        - Replace=true
+
   - name: price-streamer-dev
     namespace: finance-dev
     project: quant-cm
