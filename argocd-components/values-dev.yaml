@@ -256,6 +256,8 @@ apps:
       syncOptions:
       - CreateNamespace=true
 
+  ###### DEPLOYMENET POUR KAFKA #####################################################################################
+
   - name: kafka-dev
     namespace: kafka-dev  # même namespace que l'orchestrateur
     project: quant-cm
