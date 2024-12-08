@@ -240,21 +240,22 @@ apps:
       - CreateNamespace=true
       - Replace=true  # Force le remplacement des ressources
 
-  - name: dagster-pipeline-successtest
-    namespace: dagster-dev  # même namespace que l'orchestrateur
+  - name: strimzi-kafka-operator
+    namespace: kafka-dev
     project: quant-cm
     source:
-      repoURL: https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_DAGSTER_PIPELINE_successtest.git
-      path: .
+      repoURL: https://github.com/strimzi/strimzi-kafka-operator.git
+      path: deploy/helm/strimzi-kafka-operator  # Chemin vers le chart Helm Strimzi dans le repo
       helm:
-        valueFiles: values.yaml
-      targetRevision: main
+        valueFiles: values.yaml  # Indiquer le fichier de valeurs comme une chaîne, pas un tableau
+    targetRevision: main  # Utilise la branche de ton choix, comme 'main'
     syncPolicy:
       automated:
         prune: true
         selfHeal: true
       syncOptions:
-      - CreateNamespace=true
+        - CreateNamespace=true  # Crée le namespace si nécessaire
+        - Replace=true
 
   ###### DEPLOYMENET POUR KAFKA #####################################################################################
 
