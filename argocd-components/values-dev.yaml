@@ -243,21 +243,30 @@ apps:
   ###### DEPLOYMENET POUR KAFKA #####################################################################################
 
   - name: kafka-dev
-    namespace: kafka-dev  # même namespace que l'orchestrateur
+    namespace: kafka-dev
     project: quant-cm
     source:
       repoURL: https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_kafka.git
       path: kafka-components
       helm:
-        valueFiles: values.dev.yaml    # ou values.dev.yaml si vous avez des fichiers par environnement
+        valueFiles: 
+          - values.dev.yaml
       targetRevision: main
     syncPolicy:
       automated:
         prune: true
         selfHeal: true
       syncOptions:
-      - CreateNamespace=true
-      - Replace=true
+        - CreateNamespace=true
+        - Replace=true
+    ignoreDifferences:
+      - group: ""
+        kind: PersistentVolumeClaim
+        jsonPointers:
+          - /status
+          - /metadata/resourceVersion
+          - /metadata/annotations
+          - /metadata/managedFields
 
   - name: price-streamer-dev
     namespace: finance-dev
