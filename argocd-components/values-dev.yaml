@@ -249,8 +249,7 @@ apps:
       repoURL: https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_kafka.git
       path: kafka-components
       helm:
-        valueFiles: 
-          - values.dev.yaml
+        valueFiles: values.dev.yaml
       targetRevision: main
     syncPolicy:
       automated:
