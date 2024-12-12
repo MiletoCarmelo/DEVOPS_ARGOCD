@@ -213,7 +213,7 @@ apps:
       repoURL: https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_ib_gateway.git
       path: umbrella-ib-gateway
       helm:       # Ajout de cette section
-        valueFiles: values.yaml    # ou values.dev.yaml si vous avez des fichiers par environnement
+        valueFiles: values.dev.yaml    # ou values.dev.yaml si vous avez des fichiers par environnement
       targetRevision: main
     syncPolicy:
       automated:
