@@ -128,3 +128,8 @@ echo "Installation complete!"
 echo "You can now access ArgoCD UI at: https://$BASE_HOST"
 echo "Username: admin"
 echo "Password: Admin123"
+
+
+# mettre en pause kube sur raspberry :
+# sudo systemctl stop k3s
+# sudo systemctl start k3s
