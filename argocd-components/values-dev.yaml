@@ -212,16 +212,16 @@ apps:
     source:
       repoURL: https://github.com/MiletoCarmelo/DEVOPS_DEPLOY_ib_gateway.git
       path: umbrella-ib-gateway
-      helm:       # Ajout de cette section
-        valueFiles: values.dev.yaml    # ou values.dev.yaml si vous avez des fichiers par environnement
+      helm:
+        valueFiles: values.dev.yaml
       targetRevision: main
     syncPolicy:
       automated:
         prune: true
         selfHeal: true
       syncOptions:
-      - CreateNamespace=true
-      - Replace=true  # Force le remplacement des ressources
+        - CreateNamespace=true
+        - Replace=true
 
   - name: dagster-dev
     namespace: dagster-dev
